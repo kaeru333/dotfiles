@@ -42,6 +42,11 @@
 # --- nvim ---
 .config/nvim/lazy-lock.json
 .config/nvim/.git
+.config/nvim/.env              # Overleaf セッションクッキー含む
+.config/nvim/.claude/**        # Claude Code ローカル設定
+.config/nvim/PROGRESS.md       # セッションログ（一時ファイル）
+.config/nvim/hoge.md           # テストファイル
+.config/nvim/pack/**           # vim pack プラグイン（copilot.vim 等、自動 DL 管理）
 
 # --- tmux plugins（tpm が自動 DL・管理するため chezmoi 対象外）---
 .config/tmux/plugins/**
