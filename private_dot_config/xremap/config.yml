@@ -1,0 +1,12 @@
+modmap:
+  - name: Caps2Ctrl
+    remap:
+      CapsLock: LEFTCTRL
+  - name: Muhenkan2Shift
+    remap:
+      Muhenkan: Shift_L
+
+keymap:
+  - name: Emacs binding
+    remap:
+      C-h: [backspace, { set_mark: false }]

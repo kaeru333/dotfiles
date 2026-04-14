@@ -33,6 +33,10 @@
 # --- nvim ---
 .config/nvim/lazy-lock.json
 
+# --- カレンダー同期: 個人情報・OAuth クライアントシークレットを含む ---
+.config/vdirsyncer/**
+.config/khal/**
+
 # --- キャッシュ・ログ・動的生成 ---
 **/cache/**
 **/Cache/**

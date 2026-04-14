@@ -1,0 +1,11 @@
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-commit-link-format="lazygit-edit://{commit}"
+
+os:
+  # lazygit からファイルを開く際のエディタを nvim に固定
+  edit: 'nvim {{filename}}'
+  editAtLine: 'nvim +{{line}} {{filename}}'
+  editAtLineAndWait: 'nvim +{{line}} {{filename}}'
+  openDirInEditor: 'nvim {{dir}}'

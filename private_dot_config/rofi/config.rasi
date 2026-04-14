@@ -1,0 +1,6 @@
+
+@theme "/home/yoshimi/.local/share/rofi/themes/rounded-green-dark.rasi"
+
+configuration {
+    show-icons: true;
+}
