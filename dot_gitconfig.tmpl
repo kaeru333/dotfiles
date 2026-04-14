@@ -1,0 +1,11 @@
+[user]
+{{- if .useBitwarden }}
+    name  = {{ (bitwardenFields "item" "chezmoi/identity").git_name.value }}
+    email = {{ (bitwardenFields "item" "chezmoi/identity").git_email.value }}
+{{- else }}
+    name  = {{ .git_name }}
+    email = {{ .git_email }}
+{{- end }}
+
+[init]
+    defaultBranch = main

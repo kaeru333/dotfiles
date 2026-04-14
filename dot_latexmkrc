@@ -1,0 +1,67 @@
+#!/usr/bin/env perl
+
+# uplatex と dvipdfmx を使用する設定
+$latex = 'uplatex -synctex=1 -file-line-error -interaction=nonstopmode %O %S';
+$dvipdf = 'dvipdfmx %O -o %D %S || (rm -f "%D" && false)';
+$pdf_mode = 3;
+
+# コンパイル成功後、PDFをカレントディレクトリにコピー
+# 注: -pvc時も実行されるが、zathuraは.out/main.pdfを監視するため無害
+$success_cmd = 'cp "%D" "./%R.pdf"';
+
+# BibTeX / Biber の設定
+$bibtex = 'upbibtex %O %S';
+$biber = 'biber %O %S';
+
+# 索引 (mendex) の設定
+$makeindex = 'upmendex %O -o %D %S';
+
+# 中間ファイル（.aux, .log, .dvi など）を .out ディレクトリにまとめる設定
+# PDFは $success_cmd によりカレントディレクトリにコピーされる
+$out_dir = '.out';
+$aux_dir = '.out';
+
+# ==========================================================
+# ===== 画像のBoundingBox(.xbb)を自動生成するルール (ここから) =====
+# ==========================================================
+add_cus_dep('eps', 'xbb', 0, 'ebb');
+add_cus_dep('pdf', 'xbb', 0, 'ebb');
+add_cus_dep('png', 'xbb', 0, 'ebb');
+add_cus_dep('jpg', 'xbb', 0, 'ebb');
+add_cus_dep('jpeg', 'xbb', 0, 'ebb');
+
+sub ebb {
+    my ($source) = @_;
+    if ( $source =~ /^(.*)\.(.*)$/ ) {
+        my $base = $1;
+        my $ext = $2;
+        my $out = "$base.xbb";
+        # extractbb がある場合のみ実行
+        if ( system("which extractbb >/dev/null 2>&1") == 0 ) {
+            # 既にxbbファイルが存在する場合は何もしない
+            return 0 if -f $out;
+            # xbbファイルを生成
+            return system "extractbb -o \"$out\" \"$source\"";
+        }
+    }
+    return 0;
+}
+# ==========================================================
+# ===== (ここまで) =========================================
+# ==========================================================
+
+
+# プレビューワの設定 (環境に合わせて変更してください)
+$pdf_previewer = 'zathura %S'; # Linuxの場合
+# $pdf_previewer = 'open -a Skim %S'; # macOSの場合 (Skim)
+
+# -pvc オプション (継続的プレビュー) 使用時の設定
+# zathura は inotify でファイル変更を自動検知するため、テンポラリ経由は無効化
+$pvc_view_file_via_temporary = 0;
+# ビューア自身がファイル変更を検知するモード（zathura対応）
+$pdf_update_method = 0;
+
+# -pvc 中にエラーがあってもファイル監視を継続する
+$force_mode = 1;
+
+1; # この行はファイルの末尾に必要です

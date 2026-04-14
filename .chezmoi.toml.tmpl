@@ -1,0 +1,12 @@
+{{- /*
+chezmoi init 時に対話プロンプトで生成される ~/.config/chezmoi/chezmoi.toml のテンプレ。
+Bitwarden CLI にログイン済み (`bw unlock` で BW_SESSION export 済み) なら useBitwarden=true を推奨。
+*/ -}}
+{{- $useBitwarden := promptBoolOnce . "useBitwarden" "Use Bitwarden CLI to inject secrets?" true -}}
+
+[data]
+    useBitwarden = {{ $useBitwarden }}
+{{- if not $useBitwarden }}
+    git_email = {{ promptString "git_email" | quote }}
+    git_name  = {{ promptString "git_name"  | quote }}
+{{- end }}

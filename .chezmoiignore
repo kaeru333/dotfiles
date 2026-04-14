@@ -1,0 +1,49 @@
+# =============================================================================
+# .chezmoiignore — source → target 適用時にスキップするファイル
+# Phase 4 で本格整備。Phase 2/3 の吸収作業中の誤取込を防ぐため先行配置。
+# =============================================================================
+
+# --- 秘密情報: SSH 鍵 ---
+.ssh/id_*
+.ssh/id_*.pub
+.ssh/known_hosts
+.ssh/authorized_keys
+
+# --- 秘密情報: GPG ---
+.gnupg/**
+
+# --- 秘密情報: クラウド / API 認証 ---
+.aws/credentials
+.aws/sso/cache/**
+.docker/config.json
+.cargo/credentials
+.cargo/credentials.toml
+.config/gh/hosts.yml
+.config/rclone/rclone.conf
+.config/github-copilot/apps.json
+.config/github-copilot/hosts.json
+.condarc
+.npmrc
+
+# --- fish: マシン依存・自動生成 ---
+.config/fish/fish_variables
+.config/fish/fish_history
+.config/fish/completions/_*.fish
+
+# --- nvim ---
+.config/nvim/lazy-lock.json
+
+# --- キャッシュ・ログ・動的生成 ---
+**/cache/**
+**/Cache/**
+**/GPUCache/**
+**/logs/**
+**/*.log
+**/*.sock
+**/*.pid
+
+# --- OS / エディタの一時ファイル ---
+**/.DS_Store
+**/Thumbs.db
+**/*.swp
+**/*~
