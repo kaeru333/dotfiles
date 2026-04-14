@@ -32,6 +32,10 @@
 
 # --- nvim ---
 .config/nvim/lazy-lock.json
+.config/nvim/.git
+
+# --- tmux plugins（tpm が自動 DL・管理するため chezmoi 対象外）---
+.config/tmux/plugins/**
 
 # --- カレンダー同期: 個人情報・OAuth クライアントシークレットを含む ---
 .config/vdirsyncer/**
