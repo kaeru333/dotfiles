@@ -25,10 +25,19 @@
 .condarc
 .npmrc
 
-# --- fish: マシン依存・自動生成 ---
+# --- fish: マシン依存・自動生成・機密 ---
 .config/fish/fish_variables
 .config/fish/fish_history
+.config/fish/profile.log
+.config/fish/secrets.fish                    # Slack/Kaggle トークン含む → Phase 4 で Bitwarden テンプレ化予定
 .config/fish/completions/_*.fish
+.config/fish/completions/alacritty.fish      # alacritty 自動生成
+.config/fish/completions/nvm.fish            # nvm プラグイン自動生成
+.config/fish/functions/__*.fish              # fisher プラグイン自動生成（__bobthefish, __fzf, __z 等）
+.config/fish/functions/fisher.fish           # fisher 本体（fisher install で再取得可）
+.config/fish/functions/nvm.fish              # nvm プラグイン
+.config/fish/functions/_nvm_*.fish           # nvm 内部関数
+.config/fish/functions/fish_prompt.*.copy    # バックアップファイル
 
 # --- nvim ---
 .config/nvim/lazy-lock.json
