@@ -51,6 +51,11 @@
 # --- tmux plugins（tpm が自動 DL・管理するため chezmoi 対象外）---
 .config/tmux/plugins/**
 
+# --- hypr: 一時ファイル・Claude ローカル設定 ---
+.config/hypr/.claude/**
+.config/hypr/PROGRESS.md
+.config/hypr/llm_pop.*
+
 # --- カレンダー同期: 個人情報・OAuth クライアントシークレットを含む ---
 .config/vdirsyncer/**
 .config/khal/**
