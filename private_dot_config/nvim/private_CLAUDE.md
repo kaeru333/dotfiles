@@ -125,3 +125,45 @@ fish シェル環境での使用を前提としており、起動時のパフォ
 - **fish シェル依存**: 外部コマンド実行は fish が前提
 - **自動プラグイン更新**: 起動時に自動で lazy.nvim が更新される（`autocmds.lua:4-9`）
 - **pack/ ディレクトリ**: copilot.vim と nvim-lspconfig が vim-pack形式で配置されている
+
+---
+
+## chezmoi 連携ルール (MANDATORY)
+
+このリポジトリは chezmoi (`~/.local/share/chezmoi`) で管理されている。
+`~/.config/nvim/` への変更は、必ず chezmoi リポジトリ側でも反映すること。
+
+### 作業ブランチ
+
+- chezmoi リポジトリでの作業は **`feat/nvim` ブランチ** で行うこと。
+- 作業前に必ずブランチを確認・切り替えること:
+
+```bash
+git -C ~/.local/share/chezmoi checkout feat/nvim
+# ブランチが存在しない場合は作成:
+git -C ~/.local/share/chezmoi checkout -b feat/nvim
+```
+
+### ファイル変更の手順
+
+1. `~/.config/nvim/` 内のファイルを編集する
+2. chezmoi で差分を確認する:
+
+```bash
+chezmoi diff
+```
+
+3. chezmoi リポジトリに変更を反映する:
+
+```bash
+chezmoi re-add ~/.config/nvim/<変更したファイル>
+# または全体を一括で:
+chezmoi re-add ~/.config/nvim/
+```
+
+4. `feat/nvim` ブランチにコミットする:
+
+```bash
+git -C ~/.local/share/chezmoi add -p
+git -C ~/.local/share/chezmoi commit -m "feat(nvim): <変更内容>"
+```
