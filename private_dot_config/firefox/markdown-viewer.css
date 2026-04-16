@@ -1,0 +1,140 @@
+/*
+ * Firefox 拡張 Markdown Viewer (simov/markdown-viewer) 用カスタム CSS
+ *
+ * 使い方:
+ *   1. 拡張アイコン → Advanced Options → Settings
+ *   2. Content Theme を CUSTOM に変更
+ *   3. このファイルをアップロード (!! 編集のたびに再アップロード必須 !!)
+ *   4. Color Scheme は Light を選択
+ *   5. 対象タブを再読込
+ *
+ * DOM 構造:
+ *   <body class="_theme-custom _color-light">
+ *     <div id="_html" class="markdown-theme"> ... 生成された HTML ... </div>
+ *     <style> /* このファイルの内容が verbatim で挿入される */
+ *   </body>
+ *
+ * 組み込みテーマは bare selector (h1, p, pre ...) で記述する慣習なので
+ * ここでも同じく bare selector で書く。
+ *
+ * 配色: huemint パレット
+ *   #f0ead6 クリーム (背景)
+ *   #2b2426 ダークブラウン (文字)
+ *   #656f38 オリーブ (アクセント / リンク)
+ *   #68af6c フレッシュグリーン (強調)
+ */
+
+body {
+    background-color: #f0ead6;
+}
+
+#_html.markdown-theme {
+    background-color: #f0ead6;
+    color: #2b2426;
+    font-family: 'Avenir', 'Roboto', 'Noto Sans JP', sans-serif;
+    line-height: 1.7;
+    max-width: 860px;
+    margin: 2em auto;
+    padding: 1em 2em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #2b2426;
+    font-weight: 600;
+    margin-top: 35px;
+    padding-bottom: 5px;
+    border-bottom: 3px solid transparent;
+    box-shadow: 0 3px 0 #68af6c;
+}
+
+h1 {
+    font-size: 2.2em;
+    box-shadow: 0 3px 0 #656f38;
+}
+
+h2 {
+    font-size: 1.8em;
+    padding-left: 15px;
+    border-left: 5px solid #68af6c;
+    box-shadow: none;
+}
+
+h3 { font-size: 1.4em; }
+
+p {
+    margin: 1em 0;
+}
+
+blockquote {
+    background-color: #faf6e8;
+    color: #2b2426;
+    border-left: 5px solid #656f38;
+    padding: 15px 20px;
+    margin: 25px 0;
+    border-radius: 8px;
+    font-style: italic;
+    box-shadow: 4px 4px 0 #e4dcc0, 6px 6px 0 #cfc7a8;
+}
+
+ul { list-style-type: disc; }
+
+ul li::marker {
+    color: #68af6c;
+    font-size: 1.1em;
+}
+
+pre {
+    background-color: #faf6e8;
+    border: 1px solid #d9d2b8;
+    border-radius: 5px;
+    padding: 15px;
+    overflow-x: auto;
+}
+
+pre code {
+    background: transparent;
+    color: #2b2426;
+    font-family: 'Consolas', 'Fira Code', monospace;
+    padding: 0;
+}
+
+:not(pre) > code {
+    background-color: #e4ecc4;
+    color: #2b2426;
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-family: 'Consolas', 'Fira Code', monospace;
+}
+
+a {
+    color: #656f38;
+    text-decoration: none;
+    border-bottom: 1px dashed #656f38;
+    font-weight: 600;
+}
+
+a:hover {
+    color: #f0ead6;
+    background-color: #68af6c;
+    border-bottom-color: transparent;
+}
+
+strong {
+    color: #656f38;
+    font-weight: 700;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 1.5em 0;
+}
+
+th, td {
+    border: 1px solid #d9d2b8;
+    padding: 8px 12px;
+}
+
+th {
+    background-color: #e4ecc4;
+}
