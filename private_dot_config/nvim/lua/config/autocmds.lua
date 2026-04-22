@@ -1,9 +1,10 @@
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
--- fcitx5-skk 連携: ノーマルモード復帰時に fcitx5 を非アクティブ化して半角入力に戻す
+-- fcitx5 を nvim では常時無効化: skkeleton が日本語入力を担当するため
+-- InsertEnter/InsertLeave/CmdlineLeave でも確実に deactivate
 if vim.fn.executable("fcitx5-remote") == 1 then
-  autocmd({ "InsertLeave", "CmdlineLeave" }, {
+  autocmd({ "VimEnter", "InsertEnter", "InsertLeave", "CmdlineLeave" }, {
     group = augroup("fcitx5", { clear = true }),
     callback = function()
       vim.fn.jobstart({ "fcitx5-remote", "-c" })
