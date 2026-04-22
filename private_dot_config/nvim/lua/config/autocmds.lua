@@ -1,6 +1,16 @@
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
+-- fcitx5-skk 連携: ノーマルモード復帰時に fcitx5 を非アクティブ化して半角入力に戻す
+if vim.fn.executable("fcitx5-remote") == 1 then
+  autocmd({ "InsertLeave", "CmdlineLeave" }, {
+    group = augroup("fcitx5", { clear = true }),
+    callback = function()
+      vim.fn.jobstart({ "fcitx5-remote", "-c" })
+    end,
+  })
+end
+
 -- 未インストールプラグインの自動インストールは lazy.nvim のデフォルト機能
 -- (install.missing = true) に任せる
 
