@@ -1,0 +1,9 @@
+{
+    "define": {
+        "keymap": {
+            ":": "upper-;",
+            "C-n": "next-candidate",
+            "C-p": "previous-candidate"
+        }
+    }
+}
