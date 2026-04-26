@@ -1,6 +1,27 @@
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
+-- fcitx5 を nvim では常時無効化: skkeleton が日本語入力を担当するため
+-- リスト形式でシェルを介さずに直接実行 (shellcmdflag="-ic" による遅延を回避)
+if vim.fn.executable("fcitx5-remote") == 1 then
+  local function deactivate_fcitx5()
+    vim.fn.system({ "fcitx5-remote", "-c" })
+  end
+
+  autocmd({ "VimEnter", "InsertEnter", "InsertLeave", "CmdlineLeave" }, {
+    group = augroup("fcitx5", { clear = true }),
+    callback = deactivate_fcitx5,
+  })
+
+  -- グローバル Esc マッピング: skkeleton 未使用時 (fcitx5-skk 直接使用) にも
+  -- 確実に deactivate してからノーマルモードへ戻る
+  -- (skkeleton が有効なときは buffer-local 側が優先される)
+  vim.keymap.set("i", "<Esc>", function()
+    deactivate_fcitx5()
+    return "<Esc>"
+  end, { expr = true, noremap = true })
+end
+
 -- 未インストールプラグインの自動インストールは lazy.nvim のデフォルト機能
 -- (install.missing = true) に任せる
 

@@ -1,0 +1,4 @@
+{
+    "name": "Emacs-like",
+    "description": "Default rule with Emacs-like C-n/C-p for candidate navigation"
+}
