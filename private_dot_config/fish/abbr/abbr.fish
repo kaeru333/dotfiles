@@ -44,6 +44,9 @@ abbr -a Tj --position anywhere "| trans -b :ja"
 # Bluetooth デバイス
 abbr -a bc "bluetoothctl connect"
 
+# unzip: Windows (CP932) 由来の zip でも文字化けしないように
+abbr -a unzip "unzip -O cp932"
+
 # TSUBAME
 abbr -a --position anywhere -- TSUBAME "scp://us04759@r4n11.titech.ac.jp/gs/bs/tga-nakatalab/home"
 abbr -a --position anywhere -- DAC25 "scp://tsubame//gs/bs/tga-nakatalab/home/dac25_nakata"
