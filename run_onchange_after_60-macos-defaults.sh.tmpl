@@ -1,0 +1,56 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# macOS システム設定（defaults）。run_onchange = このファイルを編集すると再適用。
+# ──────────────────────────────────────────────────────────────────────────
+# 方針:
+#   1) 「現在の環境で実設定済み」の値 … この Mac の状態を固定（snapshot）
+#   2) 「推奨追加」の値 … 一般的な開発者向け設定。不要なら各行をコメントアウト。
+# 反映には一部アプリの再起動や再ログインが必要です。
+# ──────────────────────────────────────────────────────────────────────────
+set -euo pipefail
+echo "==> macOS defaults を適用します"
+
+# ============================================================================
+# (1) 現在の環境で実際に設定済みの値（この Mac のスナップショット）
+# ============================================================================
+defaults write com.apple.dock autohide -bool true                              # Dock 自動非表示
+defaults write -g AppleInterfaceStyle -string "Dark"                           # ダークモード
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true           # タップでクリック
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+
+# ============================================================================
+# (2) 推奨追加（好みに応じて各行をコメントアウト可）
+# ============================================================================
+# --- キーボード（要再ログイン）---
+defaults write -g KeyRepeat -int 2                 # キーリピート速度（小さいほど速い）
+defaults write -g InitialKeyRepeat -int 15         # リピート開始までの遅延
+defaults write -g ApplePressAndHoldEnabled -bool false  # 長押しアクセント無効（リピート優先）
+
+# --- Finder ---
+defaults write -g AppleShowAllExtensions -bool true            # 拡張子を常に表示
+defaults write com.apple.finder ShowPathbar -bool true         # パスバー
+defaults write com.apple.finder ShowStatusBar -bool true       # ステータスバー
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"  # 検索はカレントフォルダ優先
+defaults write com.apple.finder _FXSortFoldersFirst -bool true # フォルダを先頭に
+
+# --- 保存 / 印刷パネルを展開表示 ---
+defaults write -g NSNavPanelExpandedStateForSaveMode -bool true
+defaults write -g PMPrintingExpandedStateForPrint -bool true
+
+# --- .DS_Store をネットワーク / USB に作らない ---
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
+# --- スクリーンショット: ~/Screenshots に PNG・影なしで保存 ---
+mkdir -p "$HOME/Screenshots"
+defaults write com.apple.screencapture location -string "$HOME/Screenshots"
+defaults write com.apple.screencapture type -string "png"
+defaults write com.apple.screencapture disable-shadow -bool true
+
+# --- Dock: 最近使ったアプリを隠す ---
+defaults write com.apple.dock show-recents -bool false
+
+echo "==> Dock / Finder / SystemUIServer を再起動して反映します"
+killall Dock Finder SystemUIServer 2>/dev/null || true
+echo "==> 完了（キーリピート等は再ログイン後に反映）"
+{{ end -}}

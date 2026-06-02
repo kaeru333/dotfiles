@@ -1,0 +1,94 @@
+# =============================================================================
+# Brewfile — macOS のアプリ / CLI ツールを宣言的に管理
+#   生成元: `brew bundle dump --describe`（2026-06 時点の環境スナップショット）
+#   適用:   `brew bundle --file=~/.config/homebrew/Brewfile`
+#           （chezmoi apply 時に run_once_after_20-brew-bundle が自動実行）
+#   棚卸し: `brew bundle cleanup --file=~/.config/homebrew/Brewfile`（未記載を削除）
+#   更新:   新規導入後に `brew bundle dump --force --describe --file=~/.config/homebrew/Brewfile`
+# =============================================================================
+
+# --- Taps ---------------------------------------------------------------------
+tap "felixkratz/formulae"   # sketchybar / borders
+tap "koekeishiya/formulae"  # (skhd/yabai 系。将来用)
+tap "nikitabobko/tap"       # aerospace
+
+# --- CLI: シェル / ターミナル基盤 ---------------------------------------------
+brew "fish"                 # ログインシェル
+brew "tmux"                 # ターミナルマルチプレクサ（tpm はブートストラップで導入）
+brew "neovim"               # エディタ（lazy.nvim はプラグインを自動取得）
+brew "chezmoi"              # dotfiles 管理（このリポジトリ自身）
+
+# --- CLI: モダン coreutils 系 -------------------------------------------------
+brew "bat"                  # cat 代替（シンタックスハイライト）
+brew "eza"                  # ls 代替
+brew "fd"                   # find 代替
+brew "fzf"                  # ファジーファインダ
+brew "duf"                  # df 代替
+brew "yazi"                 # ターミナルファイラ
+brew "gotop"                # アクティビティモニタ
+
+# --- CLI: 開発ツール ----------------------------------------------------------
+brew "gh"                   # GitHub CLI
+brew "lazygit"              # Git TUI
+brew "cmake"                # ビルド
+brew "pkgconf"              # pkg-config
+brew "node"                 # Node.js
+brew "uv"                   # Python パッケージ/プロジェクト管理
+brew "pipx"                 # Python CLI を隔離環境に導入
+brew "duti"                 # デフォルトアプリ関連付け（run_once で利用余地あり）
+brew "nb"                   # ノート / ブックマーク
+
+# --- CLI: データ / ML（CowScalePrediction 等で使用） --------------------------
+brew "lightgbm"             # 勾配ブースティング
+brew "onnxruntime"          # ML 推論ランタイム
+brew "opencv"               # 画像処理
+brew "qhull"                # 凸包計算
+brew "awscli"               # AWS CLI
+
+# --- CLI: 秘密情報（任意。secrets.fish の Bitwarden 注入に必要）-------------
+# 復元時に Bitwarden から fish secrets を注入する場合に使用。
+# 不要なら次行をコメントアウト。
+brew "bitwarden-cli"
+
+# --- macOS: ウィンドウマネージャ / バー --------------------------------------
+brew "felixkratz/formulae/borders"     # JankyBorders（アクティブウィンドウ枠）
+brew "felixkratz/formulae/sketchybar"  # ステータスバー
+cask "nikitabobko/tap/aerospace"       # タイル型 WM
+
+# --- macOS: GUI アプリ --------------------------------------------------------
+cask "alacritty"            # ターミナル
+cask "ghostty"              # ターミナル
+cask "firefox"             # ブラウザ
+cask "visual-studio-code"   # エディタ
+cask "raycast"              # ランチャー（rofi 相当）
+cask "karabiner-elements"   # キーリマップ
+cask "aquaskk"              # 日本語入力（SKK）
+cask "slack"                # チャット
+cask "microsoft-office"     # Office
+cask "session-manager-plugin" # AWS SSM セッション
+
+# --- フォント -----------------------------------------------------------------
+cask "font-0xproto-nerd-font"
+
+# --- VS Code 拡張 -------------------------------------------------------------
+vscode "ms-python.python"
+vscode "ms-python.vscode-pylance"
+vscode "ms-python.debugpy"
+vscode "ms-python.vscode-python-envs"
+vscode "ms-toolsai.jupyter"
+vscode "ms-toolsai.jupyter-keymap"
+vscode "ms-toolsai.jupyter-renderers"
+vscode "ms-toolsai.vscode-jupyter-cell-tags"
+vscode "ms-toolsai.vscode-jupyter-slideshow"
+vscode "vscodevim.vim"
+
+# --- uv 管理のツール（brew bundle が `uv tool install` を実行）---------------
+uv "ruff"                   # Python リンタ/フォーマッタ
+uv "ty"                     # 型チェッカ
+
+# --- npm グローバル（brew bundle が `npm install -g` を実行）-----------------
+npm "vim-language-server"
+
+# --- App Store（mas）----------------------------------------------------------
+# 現状 mas 管理アプリなし。使う場合は `brew "mas"` を有効化し `mas "App名", id: 12345` を追記。
+# brew "mas"

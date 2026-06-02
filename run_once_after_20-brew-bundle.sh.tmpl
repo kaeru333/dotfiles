@@ -1,0 +1,21 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Brewfile を適用してアプリ / CLI / フォント / VSCode 拡張 / uv / npm を一括導入。
+# chezmoi が ~/.config/homebrew/Brewfile を配置した後（after フェーズ）に 1 度実行。
+set -euo pipefail
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+BREWFILE="$HOME/.config/homebrew/Brewfile"
+if ! command -v brew >/dev/null 2>&1; then
+  echo "WARN: brew が見つからないため brew bundle をスキップします"
+  exit 0
+fi
+if [ ! -f "$BREWFILE" ]; then
+  echo "WARN: $BREWFILE が無いため brew bundle をスキップします"
+  exit 0
+fi
+
+echo "==> brew bundle で $BREWFILE を適用します（時間がかかる場合があります）"
+# 1 項目失敗しても全体は止めない（VSCode 拡張等は後で再試行可能）
+brew bundle --file="$BREWFILE" || echo "WARN: brew bundle で一部項目が失敗しました。ログを確認してください"
+{{ end -}}
