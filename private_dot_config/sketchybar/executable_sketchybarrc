@@ -1,33 +1,57 @@
 #!/usr/bin/env bash
-# SketchyBar config — AeroSpace workspace indicator
-# Shows non-empty + focused workspaces as pills; current one is highlighted.
+# SketchyBar config — AeroSpace workspaces (left) + system status (right).
 
 CONFIG_DIR="$HOME/.config/sketchybar"
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 export CONFIG_DIR PLUGIN_DIR
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 
-# ---- bar ----
+# ---- palette (Catppuccin Macchiato) ----
+BAR_BG=0xff1e1e2e
+SURFACE=0xff363a4f
+TEXT=0xffcad3f5
+DARK=0xff11111b
+BLUE=0xff8aadf4
+GREEN=0xffa6da95
+YELLOW=0xffeed49f
+RED=0xffed8796
+MAUVE=0xffc6a0f6
+PEACH=0xfff5a97f
+
+ICON_FONT="0xProto Nerd Font Mono:Regular:15.0"
+LABEL_FONT="SF Pro:Semibold:13.0"
+
+# ---- icons (Nerd Font glyphs built from UTF-8 bytes; literals get stripped) ----
+ICON_MEM=$(printf '\xef\x8b\x9b')   # nf-fa-microchip (U+F2DB) — RAM
+ICON_CAL=$(printf '\xef\x81\xb3')   # nf-fa-calendar (U+F073)
+ICON_CLK=$(printf '\xef\x80\x97')   # nf-fa-clock    (U+F017)
+ICON_BAT=$(printf '\xef\x89\x80')   # nf-fa-battery-full (U+F240) placeholder
+
+# ---- bar (floating, bottom, frosted glass) ----
 sketchybar --bar \
-  height=34 \
-  position=top \
+  height=32 \
+  position=bottom \
   sticky=on \
-  blur_radius=0 \
-  color=0xff1e1e2e \
-  padding_left=8 \
-  padding_right=8
+  margin=12 \
+  y_offset=4 \
+  corner_radius=14 \
+  border_width=2 \
+  border_color=0x33ffffff \
+  blur_radius=30 \
+  color=0xcc1e1e2e \
+  padding_left=12 \
+  padding_right=12
 
 # ---- defaults ----
 sketchybar --default \
   label.font="SF Pro:Semibold:14.0" \
   icon.font="SF Pro:Semibold:14.0" \
-  label.color=0xffcad3f5 \
-  icon.color=0xffcad3f5 \
+  label.color=$TEXT \
+  icon.color=$TEXT \
   padding_left=3 \
   padding_right=3
 
-# ---- AeroSpace workspaces ----
-# Custom event triggered by AeroSpace's exec-on-workspace-change
+# ---- AeroSpace workspaces (left) ----
 sketchybar --add event aerospace_workspace_change
 
 for sid in $(aerospace list-workspaces --all); do
@@ -37,20 +61,50 @@ for sid in $(aerospace list-workspaces --all); do
       label="$sid" \
       label.padding_left=9 \
       label.padding_right=9 \
-      background.color=0xff8aadf4 \
-      background.corner_radius=7 \
+      background.color=$BLUE \
+      background.corner_radius=11 \
       background.height=24 \
       background.drawing=off \
       click_script="aerospace workspace $sid" \
       script="$PLUGIN_DIR/aerospace.sh $sid"
 done
 
-# ---- clock (right) ----
+# ---- system status (right) ----
+# Added right-to-left: clock is rightmost, memory is leftmost.
+# Resulting order L->R:  memory  battery  clock
+
 sketchybar --add item clock right \
-  --set clock update_freq=15 script="$PLUGIN_DIR/clock.sh" \
+  --set clock \
+    icon="$ICON_CLK" icon.color=$BLUE icon.font="$ICON_FONT" \
+    icon.padding_left=10 icon.padding_right=5 \
+    label.font="$LABEL_FONT" label.color=$TEXT label.padding_right=10 \
+    update_freq=15 script="$PLUGIN_DIR/clock.sh" \
   --subscribe clock system_woke
 
-# ---- finalize & set initial highlight ----
+sketchybar --add item battery right \
+  --set battery \
+    icon="$ICON_BAT" icon.color=$GREEN icon.font="$ICON_FONT" \
+    icon.padding_left=10 icon.padding_right=5 \
+    label.font="$LABEL_FONT" label.color=$TEXT label.padding_right=10 \
+    update_freq=120 script="$PLUGIN_DIR/battery.sh" \
+  --subscribe battery power_source_change system_woke
+
+sketchybar --add item memory right \
+  --set memory \
+    icon="$ICON_MEM" icon.color=$MAUVE icon.font="$ICON_FONT" \
+    icon.padding_left=10 icon.padding_right=5 \
+    label.font="$LABEL_FONT" label.color=$TEXT label.padding_right=10 \
+    update_freq=10 script="$PLUGIN_DIR/memory.sh" \
+  --subscribe memory system_woke
+
+# Wrap the status items in one rounded container.
+sketchybar --add bracket status memory battery clock \
+  --set status \
+    background.color=$SURFACE \
+    background.corner_radius=11 \
+    background.height=26
+
+# ---- finalize & set initial workspace highlight ----
 sketchybar --update
-FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused)" \
-  sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused)"
+sketchybar --trigger aerospace_workspace_change \
+  FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused)"
