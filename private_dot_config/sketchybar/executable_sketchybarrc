@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# SketchyBar config — AeroSpace workspace indicator
+# Shows non-empty + focused workspaces as pills; current one is highlighted.
+
+CONFIG_DIR="$HOME/.config/sketchybar"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+export CONFIG_DIR PLUGIN_DIR
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
+# ---- bar ----
+sketchybar --bar \
+  height=34 \
+  position=top \
+  sticky=on \
+  blur_radius=0 \
+  color=0xff1e1e2e \
+  padding_left=8 \
+  padding_right=8
+
+# ---- defaults ----
+sketchybar --default \
+  label.font="SF Pro:Semibold:14.0" \
+  icon.font="SF Pro:Semibold:14.0" \
+  label.color=0xffcad3f5 \
+  icon.color=0xffcad3f5 \
+  padding_left=3 \
+  padding_right=3
+
+# ---- AeroSpace workspaces ----
+# Custom event triggered by AeroSpace's exec-on-workspace-change
+sketchybar --add event aerospace_workspace_change
+
+for sid in $(aerospace list-workspaces --all); do
+  sketchybar --add item space.$sid left \
+    --subscribe space.$sid aerospace_workspace_change \
+    --set space.$sid \
+      label="$sid" \
+      label.padding_left=9 \
+      label.padding_right=9 \
+      background.color=0xff8aadf4 \
+      background.corner_radius=7 \
+      background.height=24 \
+      background.drawing=off \
+      click_script="aerospace workspace $sid" \
+      script="$PLUGIN_DIR/aerospace.sh $sid"
+done
+
+# ---- clock (right) ----
+sketchybar --add item clock right \
+  --set clock update_freq=15 script="$PLUGIN_DIR/clock.sh" \
+  --subscribe clock system_woke
+
+# ---- finalize & set initial highlight ----
+sketchybar --update
+FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused)" \
+  sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused)"

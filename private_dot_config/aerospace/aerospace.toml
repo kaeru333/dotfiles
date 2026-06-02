@@ -1,0 +1,174 @@
+# AeroSpace config — ported from kaeru333/hypr (Hyprland) by Claude
+# Docs: https://nikitabobko.github.io/AeroSpace/guide
+# Reload after editing: alt-shift-r  (or `aerospace reload-config`)
+
+# Autostart (replaces yabai's launchd agent)
+start-at-login = true
+
+# Tiling normalization (keep defaults — gives clean i3/dwindle-like trees)
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# 'tiles' = BSP-like tiling (closest to Hyprland dwindle). 'auto' splits along the longer side.
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+accordion-padding = 30
+
+# mouse_follows_focus (you had this on in yabai)
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# notify SketchyBar whenever the focused workspace changes (drives the workspace pills)
+exec-on-workspace-change = ['/bin/bash', '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
+
+[key-mapping]
+preset = 'qwerty'
+
+# Gaps (Hyprland gaps_in/out=5, your yabai used 8 — using 8 to match current feel)
+[gaps]
+inner.horizontal = 8
+inner.vertical   = 8
+outer.left       = 8
+outer.right      = 8
+outer.top        = 42
+outer.bottom     = 8
+
+#############################
+### MAIN MODE (mod = ALT) ###
+#############################
+[mode.main.binding]
+
+# --- launchers (Hyprland: $mainMod RETURN / SHIFT RETURN) ---
+alt-enter       = 'exec-and-forget open -a Ghostty'
+alt-shift-enter = 'exec-and-forget open -a Firefox'
+alt-d           = 'exec-and-forget open -a Raycast'   # Hyprland: alt D menu (rofi) — restored from skhd
+
+# --- window management ---
+alt-shift-q = 'close'                            # Hyprland: SHIFT Q killactive
+alt-f       = 'fullscreen'                        # Hyprland: alt F fullscreen
+alt-v       = 'layout floating tiling'            # Hyprland: alt V togglefloating
+alt-slash   = 'layout tiles horizontal vertical'  # Hyprland: SHIFT J togglesplit
+alt-shift-r = 'reload-config'                      # Hyprland: SHIFT R reload
+
+# --- focus (vim hjkl) ---
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# --- move window (vim hjkl) ---
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# --- resize ---
+alt-minus = 'resize smart -50'
+alt-equal = 'resize smart +50'
+
+# (Direct Alt+number removed for Hyprland parity — switch/move numbered workspaces via the Alt+W leader)
+
+# --- leader → workspace mode (Hyprland: Alt+W submap for NAMED workspaces) ---
+alt-w = 'mode workspace'
+
+#####################################################
+### WORKSPACE MODE  (Alt+W, then a key)           ###
+### Mirrors your Hyprland named-workspace submap  ###
+#####################################################
+[mode.workspace.binding]
+
+# ── SWITCH to workspace (Hyprland: Alt+W then key) ──
+# named
+s = ['workspace shell',  'mode main']
+t = ['workspace term',   'mode main']
+w = ['workspace web',    'mode main']
+b = ['workspace BG',     'mode main']
+a = ['workspace AI',     'mode main']
+c = ['workspace chat',   'mode main']
+v = ['workspace vscode', 'mode main']
+# numbered
+1 = ['workspace 1',  'mode main']
+2 = ['workspace 2',  'mode main']
+3 = ['workspace 3',  'mode main']
+4 = ['workspace 4',  'mode main']
+5 = ['workspace 5',  'mode main']
+6 = ['workspace 6',  'mode main']
+7 = ['workspace 7',  'mode main']
+8 = ['workspace 8',  'mode main']
+9 = ['workspace 9',  'mode main']
+0 = ['workspace 10', 'mode main']
+
+# ── MOVE focused window to workspace (Hyprland: Alt+W then Shift+key) ──
+# Each bound as BOTH shift-KEY and alt-shift-KEY so it fires whether or not
+# you are still holding Alt from entering the mode.
+# named
+shift-s     = ['move-node-to-workspace --focus-follows-window shell',  'mode main']
+alt-shift-s = ['move-node-to-workspace --focus-follows-window shell',  'mode main']
+shift-t     = ['move-node-to-workspace --focus-follows-window term',   'mode main']
+alt-shift-t = ['move-node-to-workspace --focus-follows-window term',   'mode main']
+shift-w     = ['move-node-to-workspace --focus-follows-window web',    'mode main']
+alt-shift-w = ['move-node-to-workspace --focus-follows-window web',    'mode main']
+shift-b     = ['move-node-to-workspace --focus-follows-window BG',     'mode main']
+alt-shift-b = ['move-node-to-workspace --focus-follows-window BG',     'mode main']
+shift-a     = ['move-node-to-workspace --focus-follows-window AI',     'mode main']
+alt-shift-a = ['move-node-to-workspace --focus-follows-window AI',     'mode main']
+shift-c     = ['move-node-to-workspace --focus-follows-window chat',   'mode main']
+alt-shift-c = ['move-node-to-workspace --focus-follows-window chat',   'mode main']
+shift-v     = ['move-node-to-workspace --focus-follows-window vscode', 'mode main']
+alt-shift-v = ['move-node-to-workspace --focus-follows-window vscode', 'mode main']
+# numbered
+shift-1     = ['move-node-to-workspace --focus-follows-window 1',  'mode main']
+alt-shift-1 = ['move-node-to-workspace --focus-follows-window 1',  'mode main']
+shift-2     = ['move-node-to-workspace --focus-follows-window 2',  'mode main']
+alt-shift-2 = ['move-node-to-workspace --focus-follows-window 2',  'mode main']
+shift-3     = ['move-node-to-workspace --focus-follows-window 3',  'mode main']
+alt-shift-3 = ['move-node-to-workspace --focus-follows-window 3',  'mode main']
+shift-4     = ['move-node-to-workspace --focus-follows-window 4',  'mode main']
+alt-shift-4 = ['move-node-to-workspace --focus-follows-window 4',  'mode main']
+shift-5     = ['move-node-to-workspace --focus-follows-window 5',  'mode main']
+alt-shift-5 = ['move-node-to-workspace --focus-follows-window 5',  'mode main']
+shift-6     = ['move-node-to-workspace --focus-follows-window 6',  'mode main']
+alt-shift-6 = ['move-node-to-workspace --focus-follows-window 6',  'mode main']
+shift-7     = ['move-node-to-workspace --focus-follows-window 7',  'mode main']
+alt-shift-7 = ['move-node-to-workspace --focus-follows-window 7',  'mode main']
+shift-8     = ['move-node-to-workspace --focus-follows-window 8',  'mode main']
+alt-shift-8 = ['move-node-to-workspace --focus-follows-window 8',  'mode main']
+shift-9     = ['move-node-to-workspace --focus-follows-window 9',  'mode main']
+alt-shift-9 = ['move-node-to-workspace --focus-follows-window 9',  'mode main']
+shift-0     = ['move-node-to-workspace --focus-follows-window 10', 'mode main']
+alt-shift-0 = ['move-node-to-workspace --focus-follows-window 10', 'mode main']
+
+# in-mode focus / fullscreen (you had these in the submap)
+f = ['fullscreen', 'mode main']
+h = ['focus left',  'mode main']
+j = ['focus down',  'mode main']
+k = ['focus up',    'mode main']
+l = ['focus right', 'mode main']
+
+# go to monitor mode (Hyprland: Alt+W → M)
+m = 'mode monitor'
+
+esc = 'mode main'
+
+#####################################################
+### MONITOR MODE  (Alt+W → M, then a key)         ###
+### Note: your monitor_mode.sh (3 layout presets) ###
+### does not port; this moves focus/windows       ###
+### between physical monitors instead.            ###
+#####################################################
+[mode.monitor.binding]
+h       = ['focus-monitor left',          'mode main']
+l       = ['focus-monitor right',         'mode main']
+shift-h = ['move-node-to-monitor left',   'mode main']
+shift-l = ['move-node-to-monitor right',  'mode main']
+1       = ['focus-monitor 1',             'mode main']
+2       = ['focus-monitor 2',             'mode main']
+esc     = 'mode main'
+
+# --- pin workspaces to monitors ---
+# 'term' workspace ALWAYS lives on the external monitor (EV3285).
+# Fallback order if EV3285 is disconnected: any secondary monitor, then the built-in display.
+[workspace-to-monitor-force-assignment]
+term = ['EV3285', 'secondary', 'built-in']
