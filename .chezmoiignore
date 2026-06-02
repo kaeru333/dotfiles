@@ -14,6 +14,8 @@
 .config/sketchybar/**
 .config/borders/**
 .config/karabiner/**
+.config/homebrew/**            # Brewfile（macOS の brew bundle 専用）
+Library/**                     # AquaSKK 等の ~/Library 配下（macOS のみ）
 {{ end }}
 {{ if ne .chezmoi.os "linux" }}
 # --- Linux 専用（linux 以外＝macOS では無視）---
@@ -111,3 +113,13 @@
 # --- fcitx5 / libskk: マシン依存ファイル ---
 .config/fcitx5/skk/user.dict          # SKK 学習履歴（マシン毎に独立）
 .config/fcitx5/conf/cached_layouts    # キーボードレイアウトキャッシュ（自動再生成）
+
+# --- AquaSKK (macOS): 巨大辞書・学習辞書はリポジトリ管理外 ---
+#   SKK-JISYO.L は run_once_after_50 が再ダウンロード、学習辞書はマシン毎に独立。
+Library/Application Support/AquaSKK/SKK-JISYO.L
+Library/Application Support/AquaSKK/skk-jisyo.utf8
+.skk-jisyo                            # AquaSKK ユーザ辞書（学習履歴）
+
+# --- Raycast (macOS): 設定は暗号化 sqlite で移行不可。手動エクスポート(.rayconfig)で運用 ---
+Library/Application Support/com.raycast.macos/**
+Library/Preferences/com.raycast.macos.plist

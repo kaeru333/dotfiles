@@ -1,10 +1,13 @@
 [user]
-{{- if .useBitwarden }}
+{{- if and .useBitwarden (lookPath "bw") (env "BW_SESSION") }}
     name  = {{ (bitwardenFields "item" "chezmoi/identity").git_name.value }}
     email = {{ (bitwardenFields "item" "chezmoi/identity").git_email.value }}
-{{- else }}
+{{- else if not .useBitwarden }}
     name  = {{ .git_name }}
     email = {{ .git_email }}
+{{- else }}
+    # Bitwarden CLI 未導入 or BW_SESSION 未設定のため name/email は未設定です。
+    # 注入するには: brew install bitwarden-cli; set -gx BW_SESSION (bw unlock --raw); chezmoi apply
 {{- end }}
 
 [init]

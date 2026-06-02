@@ -1,0 +1,17 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Homebrew が未導入なら導入する（macOS 復元の最初の依存）。
+# chezmoi apply の最初（before フェーズ）に 1 度だけ実行される。
+set -euo pipefail
+
+if ! command -v brew >/dev/null 2>&1 && [ ! -x /opt/homebrew/bin/brew ]; then
+  echo "==> Homebrew が見つかりません。インストールします"
+  NONINTERACTIVE=1 /bin/bash -c \
+    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# 後続スクリプト用に brew を PATH へ（各スクリプトは独立シェルなので個別に行う）
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+{{ end -}}

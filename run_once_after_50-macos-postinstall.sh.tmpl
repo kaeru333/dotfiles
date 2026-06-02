@@ -1,0 +1,35 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# macOS 固有の後処理: バー/枠サービス起動・AeroSpace 起動・AquaSKK 辞書取得。
+# brew bundle 後（after フェーズ）に 1 度だけ実行される。
+set -euo pipefail
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# --- sketchybar / borders をサービス起動 ---
+if command -v brew >/dev/null 2>&1; then
+  for svc in sketchybar borders; do
+    if brew services list 2>/dev/null | grep -q "^$svc"; then
+      echo "==> brew services start $svc"
+      brew services start "$svc" 2>/dev/null || true
+    fi
+  done
+fi
+
+# --- AeroSpace を起動（初回起動で start-at-login が有効化される）---
+if [ -d "/Applications/AeroSpace.app" ]; then
+  echo "==> AeroSpace を起動します"
+  open -a AeroSpace 2>/dev/null || true
+fi
+
+# --- AquaSKK のシステム辞書 SKK-JISYO.L（4MB 超・リポジトリ非管理）を取得 ---
+AQUASKK_DIR="$HOME/Library/Application Support/AquaSKK"
+DICT="$AQUASKK_DIR/SKK-JISYO.L"
+if [ -d "$AQUASKK_DIR" ] && [ ! -f "$DICT" ]; then
+  echo "==> SKK-JISYO.L をダウンロードします"
+  if curl -fsSL "https://skk-dev.github.io/dict/SKK-JISYO.L.gz" -o "$DICT.gz"; then
+    gunzip -f "$DICT.gz" || echo "WARN: SKK-JISYO.L の展開に失敗"
+  else
+    echo "WARN: SKK-JISYO.L の取得に失敗（AquaSKK 環境設定から手動で辞書を追加してください）"
+  fi
+fi
+{{ end -}}
