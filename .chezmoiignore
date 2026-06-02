@@ -3,6 +3,36 @@
 # Phase 4 で本格整備。Phase 2/3 の吸収作業中の誤取込を防ぐため先行配置。
 # =============================================================================
 
+# =============================================================================
+# OS 分岐 — 同一リポジトリで Linux / macOS 両対応
+#   .chezmoi.os に応じて、片方の OS 専用設定を apply 対象外にする。
+#   (.chezmoiignore はテンプレートとして評価される)
+# =============================================================================
+{{ if ne .chezmoi.os "darwin" }}
+# --- macOS 専用（darwin 以外＝Linux では無視）---
+.config/aerospace/**
+.config/sketchybar/**
+.config/borders/**
+.config/karabiner/**
+{{ end }}
+{{ if ne .chezmoi.os "linux" }}
+# --- Linux 専用（linux 以外＝macOS では無視）---
+.config/hypr/**
+.config/waybar/**
+.config/wlogout/**
+.config/rofi/**
+.config/dunst/**
+.config/foot/**
+.config/gtk-4.0/**
+.config/xremap/**
+.config/xsettingsd/**
+.config/fcitx5/**
+.config/libskk/**
+.config/zathura/**
+{{ end }}
+# --- karabiner: マシン依存の自動バックアップは常に除外 ---
+.config/karabiner/automatic_backups/**
+
 # --- 秘密情報: SSH 鍵 ---
 .ssh/id_*
 .ssh/id_*.pub

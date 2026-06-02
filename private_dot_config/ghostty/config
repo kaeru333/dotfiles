@@ -1,0 +1,32 @@
+font-family = 0xProto Nerd Font Mono
+font-size = 14
+
+background-opacity = 0.85
+window-decoration = false
+
+# Alacrittyのカラースキームと同じ (Tokyo Night)
+background = 1a1b26
+foreground = c0caf5
+palette = 0=#15161e
+palette = 1=#f7768e
+palette = 2=#9ece6a
+palette = 3=#e0af68
+palette = 4=#7aa2f7
+palette = 5=#bb9af7
+palette = 6=#7dcfff
+palette = 7=#a9b1d6
+palette = 8=#414868
+palette = 9=#f7768e
+palette = 10=#9ece6a
+palette = 11=#e0af68
+palette = 12=#7aa2f7
+palette = 13=#bb9af7
+palette = 14=#7dcfff
+palette = 15=#c0caf5
+
+# Ctrl+SpaceをGhosttyが消費しないようにする（macOSのIME切り替えに渡す）
+# ignore にしないとターミナルに NUL (^@) が送られて `@` が表示される
+keybind = all:ctrl+space=ignore
+
+# Ctrl+JをAquaSKKのかな/英数トグルに渡す（デフォルトでは LF が送られてIMEに届かない）
+keybind = all:ctrl+j=ignore

@@ -1,9 +1,13 @@
 # dotfiles
 
-EndeavourOS / Hyprland / fish / tmux / Neovim の個人環境設定。
+Linux (EndeavourOS / Hyprland) と macOS (AeroSpace) の個人環境設定。
+fish / tmux / Neovim / 各種ターミナルは両 OS で共有し、ウィンドウマネージャ等の OS 固有設定は
+`.chezmoiignore` 内で `.chezmoi.os` により振り分けて、**同一リポジトリで両 OS に対応**しています。
 [chezmoi](https://www.chezmoi.io/) で管理、[Bitwarden](https://bitwarden.com/) と連携して秘密情報を分離。
 
 ## Bootstrap（新マシンへの導入）
+
+### Linux
 
 ```bash
 # 1. Bitwarden CLI をインストールしてアンロック（秘密情報が必要な場合）
@@ -16,36 +20,67 @@ export BW_SESSION=$(bw unlock --raw)  # 2 回目以降
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply kaeru333/dotfiles
 ```
 
+### macOS
+
+```bash
+# 1. Homebrew で chezmoi（必要なら Bitwarden CLI も）を導入
+brew install chezmoi
+# brew install bitwarden-cli && export BW_SESSION=$(bw unlock --raw)  # 秘密情報が必要な場合
+
+# 2. chezmoi で一発セットアップ（Linux 専用設定は .chezmoi.os で自動スキップ）
+chezmoi init --apply kaeru333/dotfiles
+
+# 3. ウィンドウマネージャ等の関連ツール
+brew install --cask aerospace
+brew install sketchybar borders   # FelixKratz/formulae tap
+```
+
 ## Environment
 
-| ツール | 種類 |
-|--------|------|
-| OS | EndeavourOS (Arch Linux) |
-| WM | Hyprland (Wayland) |
-| Shell | fish |
-| Terminal | foot / wezterm |
-| Editor | Neovim (lazy.nvim) |
-| Multiplexer | tmux (tpm) |
+| ツール | Linux | macOS |
+|--------|-------|-------|
+| OS | EndeavourOS (Arch Linux) | macOS |
+| WM | Hyprland (Wayland) | AeroSpace |
+| バー | waybar | sketchybar |
+| ウィンドウ枠 | — | borders (JankyBorders) |
+| ランチャー | rofi | Raycast |
+| 通知 | dunst | — |
+| キーリマップ | xremap | karabiner |
+| Shell | fish | fish |
+| Terminal | foot / wezterm | alacritty / ghostty / wezterm |
+| Editor | Neovim (lazy.nvim) | Neovim (lazy.nvim) |
+| Multiplexer | tmux (tpm) | tmux (tpm) |
 
 ## Structure
+
+OS 固有のディレクトリは `.chezmoiignore`（`.chezmoi.os` 分岐）で、適用先 OS に合うものだけが展開されます。
 
 ```
 ~/
 ├── .gitconfig          ← git（name/email は Bitwarden 注入）
 ├── .latexmkrc          ← LaTeX ビルド設定
 └── .config/
-    ├── hypr/           ← Hyprland
+    │  # --- 共有（両 OS）---
     ├── nvim/           ← Neovim (lazy.nvim)
     ├── fish/           ← fish shell + abbreviations + functions
     ├── tmux/           ← tmux（plugins は tpm が管理）
-    ├── wlogout/        ← wlogout ログアウト画面
+    ├── wezterm/        ← ターミナルエミュレータ
+    ├── alacritty/      ← ターミナルエミュレータ
+    ├── ghostty/        ← ターミナルエミュレータ
+    ├── lazygit/        ← Git TUI
+    │  # --- Linux 専用 ---
+    ├── hypr/           ← Hyprland
     ├── waybar/         ← ステータスバー
+    ├── wlogout/        ← ログアウト画面
     ├── rofi/           ← アプリランチャー
     ├── dunst/          ← 通知デーモン
     ├── foot/           ← ターミナルエミュレータ
-    ├── wezterm/        ← ターミナルエミュレータ
-    ├── lazygit/        ← Git TUI
     ├── zathura/        ← PDF ビューア
+    │  # --- macOS 専用 ---
+    ├── aerospace/      ← AeroSpace（タイル型 WM）
+    ├── sketchybar/     ← ステータスバー
+    ├── borders/        ← ウィンドウ枠（JankyBorders）
+    ├── karabiner/      ← キーリマップ
     └── ...
 ```
 
