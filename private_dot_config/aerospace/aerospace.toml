@@ -27,13 +27,15 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 preset = 'qwerty'
 
 # Gaps (Hyprland gaps_in/out=5, your yabai used 8 — using 8 to match current feel)
+# SketchyBar is a floating bar at the BOTTOM (height 32 + y_offset 10), so reserve
+# outer.bottom for it and keep outer.top small.
 [gaps]
 inner.horizontal = 8
 inner.vertical   = 8
 outer.left       = 8
 outer.right      = 8
-outer.top        = 42
-outer.bottom     = 8
+outer.top        = 8
+outer.bottom     = 46
 
 #############################
 ### MAIN MODE (mod = ALT) ###
