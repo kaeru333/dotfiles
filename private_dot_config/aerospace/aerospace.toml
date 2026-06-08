@@ -90,6 +90,7 @@ b = ['workspace BG',     'mode main']
 a = ['workspace AI',     'mode main']
 c = ['workspace chat',   'mode main']
 v = ['workspace vscode', 'mode main']
+x = ['workspace xcode',  'mode main']
 # numbered
 1 = ['workspace 1',  'mode main']
 2 = ['workspace 2',  'mode main']
@@ -120,6 +121,8 @@ shift-c     = ['move-node-to-workspace --focus-follows-window chat',   'mode mai
 alt-shift-c = ['move-node-to-workspace --focus-follows-window chat',   'mode main']
 shift-v     = ['move-node-to-workspace --focus-follows-window vscode', 'mode main']
 alt-shift-v = ['move-node-to-workspace --focus-follows-window vscode', 'mode main']
+shift-x     = ['move-node-to-workspace --focus-follows-window xcode',  'mode main']
+alt-shift-x = ['move-node-to-workspace --focus-follows-window xcode',  'mode main']
 # numbered
 shift-1     = ['move-node-to-workspace --focus-follows-window 1',  'mode main']
 alt-shift-1 = ['move-node-to-workspace --focus-follows-window 1',  'mode main']
@@ -170,7 +173,14 @@ shift-l = ['move-node-to-monitor right',  'mode main']
 esc     = 'mode main'
 
 # --- pin workspaces to monitors ---
-# 'term' workspace ALWAYS lives on the external monitor (EV3285).
-# Fallback order if EV3285 is disconnected: any secondary monitor, then the built-in display.
+# 'term'  → USB-C EIZO (EV3285).    "terminal" monitor.
+# 'xcode' → HDMI  DELL (U2718Q).    "Xcode" monitor.
+# Fallback order if the target monitor is disconnected: any secondary monitor, then built-in.
 [workspace-to-monitor-force-assignment]
-term = ['EV3285', 'secondary', 'built-in']
+term  = ['EV3285',      'secondary', 'built-in']
+xcode = ['DELL U2718Q', 'secondary', 'built-in']
+
+# --- auto-place Xcode windows on the 'xcode' workspace (HDMI / DELL) ---
+[[on-window-detected]]
+if.app-id = 'com.apple.dt.Xcode'
+run = ['move-node-to-workspace xcode']
