@@ -33,6 +33,7 @@ brew "lazygit"              # Git TUI
 brew "cmake"                # ビルド
 brew "pkgconf"              # pkg-config
 brew "node"                 # Node.js
+brew "deno"                 # Deno（nvim: denops/skkeleton 日本語入力の必須依存）
 brew "uv"                   # Python パッケージ/プロジェクト管理
 brew "pipx"                 # Python CLI を隔離環境に導入
 brew "duti"                 # デフォルトアプリ関連付け（run_once で利用余地あり）

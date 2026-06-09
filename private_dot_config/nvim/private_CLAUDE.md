@@ -7,7 +7,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 概要
 
 このリポジトリは、lazy.nvim ベースの個人用 Neovim 設定です。
+**Arch Linux と macOS の両環境で動作する**ことを保証しており、OS固有の差異は
+`vim.fn.has("mac")` / `vim.fn.executable(...)` による分岐や、実在パスの自動検出で吸収しています。
 fish シェル環境での使用を前提としており、起動時のパフォーマンス計測機能を含んでいます。
+
+---
+
+## クロスプラットフォーム対応 (Linux / macOS)
+
+「単純に mac へ寄せる」のではなく、**どちらの OS でも OS固有エラーなく動く**ことを原則とする。
+新規に OS 依存のコマンド/パスを書くときは、必ず分岐か自動検出を入れること。
+
+| 機能 | Linux | macOS | 実装方針 |
+|------|-------|-------|----------|
+| 日本語入力 (`plugins/skkeleton.lua`) | deno + `/usr/share/skk/SKK-JISYO.L` + yaskkserv2(127.0.0.1:1178) | deno(Homebrew) + AquaSKK 同梱辞書(`~/Library/Application Support/AquaSKK/SKK-JISYO.L`) | deno は `~/.deno/bin` → PATH の順で検出し**無ければ skkeleton 一式をロードしない**。辞書は候補リストから実在ファイルを採用。SKKサーバは Linux のみ設定 |
+| IME 自動 OFF (`config/autocmds.lua`) | `fcitx5-remote -c` | (なし。skkeleton が編集内で完結) | `executable("fcitx5-remote")` ガードで Linux のみ有効 |
+| クリップボード (`core/options.lua`) | `wl-copy`/`wl-paste` (Wayland) | OS 標準 (pbcopy/pbpaste) | `has("linux") and executable("wl-copy")` ガード |
+| LaTeX ビューア (`plugins/vimtex.lua`) | zathura | skim | `has("mac")` 分岐 |
+| Overleaf (`plugins/overleaf.lua`) | `/usr/bin/node` | `/opt/homebrew/bin/node` | `exepath("node")` で動的解決(空なら Linux 既定にフォールバック) |
+
+> mac で skkeleton を使うには `brew install deno` と AquaSKK(`cask "aquaskk"`)が必要。
+> いずれも `homebrew/Brewfile` に宣言済み。
 
 ---
 
