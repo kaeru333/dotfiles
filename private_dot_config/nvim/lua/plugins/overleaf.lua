@@ -10,9 +10,15 @@ return {
   },
   build = "cd node && npm install",
   config = function()
+    -- node のパスは OS で異なる (Linux=/usr/bin/node, mac=/opt/homebrew/bin/node)
+    -- ため PATH から動的に解決する。見つからなければ Linux 既定にフォールバック
+    local node_path = vim.fn.exepath("node")
+    if node_path == "" then
+      node_path = "/usr/bin/node"
+    end
     require("overleaf").setup({
       env_file = vim.fn.expand("~/.config/nvim/.env"),
-      node_path = "/usr/bin/node",
+      node_path = node_path,
       log_level = "info",
       sync_dir = "~/.overleaf",
       keys = false,
