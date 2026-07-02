@@ -1,19 +1,24 @@
 # =============================================================================
 # Brewfile — macOS のアプリ / CLI ツールを宣言的に管理
-#   生成元: `brew bundle dump --describe`（2026-06 時点の環境スナップショット）
+#   スナップショット: 2026-07 時点のこの Mac の環境
 #   適用:   `brew bundle --file=~/.config/homebrew/Brewfile`
 #           （chezmoi apply 時に run_once_after_20-brew-bundle が自動実行）
 #   棚卸し: `brew bundle cleanup --file=~/.config/homebrew/Brewfile`（未記載を削除）
-#   更新:   新規導入後に `brew bundle dump --force --describe --file=~/.config/homebrew/Brewfile`
+#   更新:   新規導入後に一覧を確認 → 本ファイルへ手動追記（コメント/分類を維持するため）
+#           `brew bundle dump --force --file=/tmp/Brewfile.new`（差分確認用の生ダンプ）
+#   注意:   uv / npm 行は Homebrew Bundle がネイティブ対応（`--uv` / `--npm`）。
+#           `brew bundle dump` は既定でこれらを出力しないため手動管理する。
 # =============================================================================
 
 # --- Taps ---------------------------------------------------------------------
 tap "felixkratz/formulae"   # sketchybar / borders
-tap "koekeishiya/formulae"  # (skhd/yabai 系。将来用)
 tap "nikitabobko/tap"       # aerospace
+tap "asmvik/formulae"       # leaf（汎用リローダ）
+# tap "koekeishiya/formulae"  # (skhd/yabai 系。現在は未使用のため無効化)
 
 # --- CLI: シェル / ターミナル基盤 ---------------------------------------------
 brew "fish"                 # ログインシェル
+brew "bash"                 # GNU bash（macOS 標準の 3.2 は古いため。スクリプト実行用）
 brew "tmux"                 # ターミナルマルチプレクサ（tpm はブートストラップで導入）
 brew "neovim"               # エディタ（lazy.nvim はプラグインを自動取得）
 brew "chezmoi"              # dotfiles 管理（このリポジトリ自身）
@@ -38,6 +43,13 @@ brew "uv"                   # Python パッケージ/プロジェクト管理
 brew "pipx"                 # Python CLI を隔離環境に導入
 brew "duti"                 # デフォルトアプリ関連付け（run_once で利用余地あり）
 brew "nb"                   # ノート / ブックマーク
+brew "leaf"                 # 汎用リローダ（ファイル変更で再ビルド/再実行, asmvik tap）
+brew "poppler"              # PDF ユーティリティ（pdftoppm / pdfinfo / pdftotext 等）
+
+# --- CLI: コンテナ / 仮想化 ---------------------------------------------------
+brew "colima"               # コンテナランタイム（Docker Desktop 不要の軽量 VM）
+brew "docker"               # Docker CLI（colima をバックエンドに使用）
+brew "docker-buildx"        # Docker buildx プラグイン（マルチプラットフォームビルド）
 
 # --- CLI: データ / ML（CowScalePrediction 等で使用） --------------------------
 brew "lightgbm"             # 勾配ブースティング
@@ -66,6 +78,7 @@ cask "karabiner-elements"   # キーリマップ
 cask "aquaskk"              # 日本語入力（SKK）
 cask "slack"                # チャット
 cask "microsoft-office"     # Office
+cask "libreoffice"          # オフィススイート（無償・OSS）
 cask "session-manager-plugin" # AWS SSM セッション
 
 # --- フォント -----------------------------------------------------------------
