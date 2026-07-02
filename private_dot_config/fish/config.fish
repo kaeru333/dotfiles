@@ -1,5 +1,5 @@
-set -Ux EDITOR nvim
-set -Ux VISUAL nvim
+set -gx EDITOR nvim
+set -gx VISUAL nvim
 set -x INFORMIXDIR ~/Downloads
 set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 
@@ -31,6 +31,9 @@ source $HOME/.config/fish/myconf.d/bobthefish.fish
 if test "$IS_LINUX" = 1
     fish_add_path /opt/f5/vpn
     fish_add_path $HOME/anaconda3/bin
+
+    # TeX Live 2025
+    fish_add_path /usr/local/texlive/2025/bin/x86_64-linux
 
     # IME (fcitx)
     set -x GTK_IM_MODULE fcitx

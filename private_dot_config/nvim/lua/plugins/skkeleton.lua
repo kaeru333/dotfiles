@@ -92,14 +92,19 @@ return {
             userDictionary = user_jisyo,
             kanaTable = "azik",
             eggLikeNewline = true,
+            -- 既定は辞書ファイルのみ (mac はこれで完結)
+            sources = { "skk_dictionary" },
           }
 
           -- SKK サーバ (yaskkserv2) は Linux のみ。mac は辞書ファイルで完結させる
           if vim.fn.has("mac") == 0 then
             config.skkServerHost = "127.0.0.1"
             config.skkServerPort = 1178
-            config.skkServerReqEnc = "utf-8"
-            config.skkServerResEnc = "utf-8"
+            -- yaskkserv2 は euc-jp で応答するため要求/応答とも euc-jp
+            config.skkServerReqEnc = "euc-jp"
+            config.skkServerResEnc = "euc-jp"
+            -- skkServer を使うには sources に "skk_server" を明示する必要がある
+            config.sources = { "skk_server", "skk_dictionary" }
           end
 
           vim.fn["skkeleton#config"](config)
