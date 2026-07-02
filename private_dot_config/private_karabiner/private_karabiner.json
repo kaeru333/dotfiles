@@ -4,14 +4,103 @@
             "complex_modifications": {
                 "rules": [
                     {
+                        "description": "AquaSKK: pass Ctrl+N/Ctrl+P to SKK in Firefox (next/prev candidate)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "n",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "n",
+                                        "modifiers": [
+                                            "left_control"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^org\\.mozilla\\.firefox$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "p",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "p",
+                                        "modifiers": [
+                                            "left_control"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^org\\.mozilla\\.firefox$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "description": "Ctrl+Space to AquaSKK Hiragana",
                         "manipulators": [
                             {
                                 "from": {
                                     "key_code": "spacebar",
                                     "modifiers": {
-                                        "mandatory": ["control"],
-                                        "optional": ["caps_lock"]
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
                                     }
                                 },
                                 "to": [
@@ -27,15 +116,66 @@
                         ]
                     },
                     {
+                        "description": "Slack: Ctrl+Enter で送信 (Cmd+Enter にマップ)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "return_or_enter",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "return_or_enter",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "description": "Linux-like shortcuts: Ctrl -> Cmd (disabled in terminals)",
                         "manipulators": [
                             {
                                 "type": "basic",
                                 "from": {
                                     "key_code": "c",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "c", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "c",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -48,7 +188,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -57,9 +198,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "v",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "v", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "v",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -72,7 +229,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -81,9 +239,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "x",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "x", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "x",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -96,7 +270,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -105,9 +280,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "a",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "a", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "a",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -120,7 +311,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -129,9 +321,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "z",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "z", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "z",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -144,7 +352,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -153,9 +362,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "s",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "s", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "s",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -168,7 +393,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -177,9 +403,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "f",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "f", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "f",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -192,7 +434,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -201,9 +444,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "t",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "t", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "t",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -216,7 +475,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -225,9 +485,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "w",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "w", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "w",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -240,7 +516,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -249,9 +526,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "n",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "n", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "n",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -264,7 +557,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -273,9 +567,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "o",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "o", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "o",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -288,7 +598,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -297,9 +608,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "p",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "p", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "p",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -312,7 +639,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -321,9 +649,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "r",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "r", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "r",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -336,7 +680,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -345,9 +690,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "l",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "l", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "l",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -360,7 +721,8 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     }
                                 ]
@@ -369,9 +731,25 @@
                                 "type": "basic",
                                 "from": {
                                     "key_code": "comma",
-                                    "modifiers": { "mandatory": ["control"], "optional": ["shift", "option", "caps_lock"] }
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ],
+                                        "optional": [
+                                            "shift",
+                                            "option",
+                                            "caps_lock"
+                                        ]
+                                    }
                                 },
-                                "to": [{ "key_code": "comma", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "comma",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
                                 "conditions": [
                                     {
                                         "type": "frontmost_application_unless",
@@ -384,7 +762,44 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$"
+                                            "^co\\.zeit\\.hyper$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "SandS: Space単押し=Space / Space+他キー=Shift(内蔵キーボードのみ)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "spacebar",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_shift"
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "spacebar"
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "is_built_in_keyboard": true
+                                            }
                                         ]
                                     }
                                 ]
@@ -406,7 +821,9 @@
             ],
             "name": "Default profile",
             "selected": true,
-            "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
+            "virtual_hid_keyboard": {
+                "keyboard_type_v2": "ansi"
+            }
         }
     ]
 }
