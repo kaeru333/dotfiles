@@ -22,6 +22,9 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply kaeru333/dotfiles
 
 ### macOS（ほぼワンコマンド復元）
 
+> 📖 **詳しい手順・移行チェックリストは [README-macos.md](README-macos.md) を参照。**
+> 新しい Mac のセットアップ、Brewfile 運用、旧 Mac からの移行はこちらにまとめています。
+
 ```bash
 # 1. Homebrew と chezmoi を導入（chezmoi が以降の依存を全部入れる）
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -51,12 +54,16 @@ chezmoi init --apply kaeru333/dotfiles
 #### Brewfile の保守
 
 ```bash
-# 新しいアプリを入れたら Brewfile に反映
-brew bundle dump --force --describe --file=~/.config/homebrew/Brewfile
-chezmoi add ~/.config/homebrew/Brewfile     # 変更をリポジトリへ
+# 現状をダンプして差分を確認（Brewfile はカテゴリ別コメント付きで手動管理）
+brew bundle dump --force --file=/tmp/Brewfile.new
+diff <(grep -E '^(brew|cask|tap|vscode) ' ~/.config/homebrew/Brewfile | sort) \
+     <(grep -E '^(brew|cask|tap|vscode) ' /tmp/Brewfile.new | sort)
+chezmoi edit ~/.config/homebrew/Brewfile    # 追加分を手で追記 → コミット
 # Brewfile 未記載のものを一掃したいとき
 brew bundle cleanup --file=~/.config/homebrew/Brewfile
 ```
+
+> 詳しい Brewfile 運用（uv / npm / mas の扱い含む）は [README-macos.md](README-macos.md#2-homebrew-でアプリ--cli-を完全再現するbrewfile) を参照。
 
 ## Environment
 
