@@ -34,21 +34,26 @@ return {
         callback = function()
           vim.fn["skkeleton#azik#add_table"]("us")
           vim.fn["skkeleton#config"]({
-            globalJisyo = "/usr/share/skk/SKK-JISYO.L",
-            userJisyo = vim.fn.expand("~/.config/fcitx5/skk/user.dict"),
+            -- 現行 skkeleton のスキーマに合わせたキー名
+            globalDictionaries = {
+              { "/usr/share/skk/SKK-JISYO.L", "euc-jp" },
+            },
+            userDictionary = vim.fn.expand("~/.config/fcitx5/skk/user.dict"),
+            -- skkServer を使うには sources に "skk_server" を明示する必要がある
+            sources = { "skk_server", "skk_dictionary" },
             skkServerHost = "127.0.0.1",
             skkServerPort = 1178,
-            skkServerReqEncoding = "utf-8",
-            skkServerResEncoding = "utf-8",
+            skkServerReqEnc = "euc-jp",
+            skkServerResEnc = "euc-jp",
             kanaTable = "azik",
             eggLikeNewline = true,
             pageSize = 7,
           })
-          -- 句読点: 全角カンマ・ピリオド
+          -- 句読点: 全角カンマ・ピリオド (既存 azik テーブルに追記)
           vim.fn["skkeleton#register_kanatable"]("azik", {
             [","] = { "，", "" },
             ["."] = { "．", "" },
-          }, true)
+          })
         end,
       })
 
