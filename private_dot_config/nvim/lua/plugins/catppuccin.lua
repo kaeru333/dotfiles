@@ -2,7 +2,8 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    event = "VeryLazy",
+    -- カラースキームは遅延させず起動時に適用する (lazy.nvim の推奨)
+    lazy = false,
     priority = 1000,
     opts = {
       transparent_background = true,
@@ -26,8 +27,11 @@ return {
         }
       end,
     },
-    init = function()
-      vim.cmd.colorscheme("catppuccin")
+    config = function(_, opts)
+      require("catppuccin").setup(opts)
+      -- nvim 0.12 から本体同梱の "catppuccin" と名前が衝突するため，
+      -- プラグイン側のフレーバー名を明示する (同梱版は transparent 非対応)
+      vim.cmd.colorscheme("catppuccin-mocha")
       vim.api.nvim_set_hl(0, "CursorLine", { bg = "NONE", sp = "#4c6a8c", underline = true})
       vim.api.nvim_set_hl(0, "CursorColumn", { bg = "NONE", underline = true, sp = "#4c6a8c"})
     end,
