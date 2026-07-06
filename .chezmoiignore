@@ -78,6 +78,12 @@ Library/**                     # AquaSKK 等の ~/Library 配下（macOS のみ�
 .config/fish/functions/nvm.fish              # nvm プラグイン
 .config/fish/functions/_nvm_*.fish           # nvm 内部関数
 .config/fish/functions/fish_prompt.*.copy    # バックアップファイル
+.config/fish/conf.d/nvm.fish                 # nvm プラグイン (fisher が更新する)
+.config/fish/functions/bobthefish_display_colors.fish  # bobthefish (fisher が更新する)
+.config/fish/functions/fish_mode_prompt.fish # bobthefish (fisher が更新する)
+.config/fish/functions/fish_prompt.fish      # bobthefish (fisher が更新する)
+.config/fish/functions/fish_right_prompt.fish # bobthefish (fisher が更新する)
+.config/fish/functions/fish_title.fish       # bobthefish (fisher が更新する)
 
 # --- nvim ---
 .config/nvim/lazy-lock.json
