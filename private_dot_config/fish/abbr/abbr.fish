@@ -3,6 +3,7 @@ abbr -a :q exit
 abbr -a ls eza --icons --color
 abbr -a lsd eza --icons --color -D
 abbr -a la eza --color -all
+abbr -a du du -h
 abbr -a df duf
 abbr -a tree eza -T
 abbr -a treed eza -T -D
@@ -29,7 +30,8 @@ abbr -a G --position anywhere "| grep"
 abbr -a F --position anywhere "| fzf"
 abbr -a Trn --position anywhere "| tr -d '\n'"
 abbr -a R --position anywhere "| lolcat"
-abbr -a St --position anywhere "--sort=time"
+# fish 4 では -- 始まりの展開値をオプションと誤認するため -- で区切る
+abbr -a St --position anywhere -- "--sort=time"
 
 # translate-shell
 abbr -a te "trans -b :en"
