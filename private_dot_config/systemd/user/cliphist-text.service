@@ -1,0 +1,11 @@
+[Unit]
+Description=cliphist クリップボード履歴（テキスト）
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/wl-paste --type text --watch cliphist store
+Restart=on-failure
+RestartSec=2

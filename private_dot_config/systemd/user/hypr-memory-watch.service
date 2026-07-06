@@ -1,0 +1,10 @@
+[Unit]
+Description=メモリ使用量監視（memory_watch.sh）
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.config/hypr/scripts/memory_watch.sh
+Restart=on-failure
+RestartSec=2

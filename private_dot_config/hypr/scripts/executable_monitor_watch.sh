@@ -7,16 +7,22 @@ STATE_FILE="/tmp/hypr_monitor_mode"
 COOLDOWN_SEC=3
 LAST_APPLY=0
 
+LOG_FILE="/tmp/hypr_monitor_watch.log"
+
 log() {
-    echo "[monitor_watch] $(date '+%H:%M:%S') $*"
+    echo "[monitor_watch] $(date '+%H:%M:%S') $*" | tee -a "$LOG_FILE"
 }
 
 # 接続中モニターからモードを判定する
 detect_mode() {
-    local monitors
+    local monitors count
     monitors=$(hyprctl monitors -j 2>/dev/null) || return 1
+    count=$(echo "$monitors" | jq 'length')
 
-    if echo "$monitors" | grep -q '"name": "DP-2"'; then
+    # モニター1枚のみ: 全 workspace を集約する single モード
+    if [[ "$count" -le 1 ]]; then
+        echo "single"
+    elif echo "$monitors" | jq -e 'any(.[]; .name == "DP-2")' >/dev/null 2>&1; then
         echo "1"
     else
         echo "3"

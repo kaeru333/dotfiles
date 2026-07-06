@@ -1,0 +1,10 @@
+[Unit]
+Description=Hyprland モニターホットプラグ監視（monitor_watch.sh）
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.config/hypr/scripts/monitor_watch.sh
+Restart=on-failure
+RestartSec=2
