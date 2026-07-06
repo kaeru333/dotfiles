@@ -5,6 +5,17 @@ modmap:
   - name: Muhenkan2Shift
     remap:
       Muhenkan: Shift_L
+  # スペースを親指シフト的に使う SandS: 単押し=空白, 長押し+他キー=Shift
+  # 内蔵キーボード AT Translated Set 2 keyboard のみに適用
+  - name: Space2Shift (internal only)
+    remap:
+      Space:
+        held: Shift_L
+        alone: Space
+        alone_timeout_millis: 200
+    device:
+      only:
+        - "AT Translated Set 2 keyboard"
 
 keymap:
   - name: Emacs binding
