@@ -31,10 +31,13 @@ apply_single() {
     local lid
     lid=$(cat /proc/acpi/button/lid/*/state 2>/dev/null | awk '{print $2}' | head -1)
 
-    # HDMI-A-1 (Dell U2718Q) は preferred が HDMI 非対応の DP 系タイミングに解決されるため
-    # CEA VIC 97 の modeline を明示指定する (aquamarine 0.12 の挙動変化対策)
+    # 接続モニタが Dell U2718Q のときだけ CEA VIC 97 の modeline を使う．
+    # (aquamarine 0.12 の preferred 解決回帰で U2718Q が HDMI 非対応タイミングに落ちる対策)
+    # それ以外 (自宅の DELL S2721HN 等) は preferred で表示する．
+    local mon_desc
+    mon_desc=$(hyprctl monitors -j 2>/dev/null | jq -r '.[0].description')
     local mode_token="preferred"
-    if [[ "$mon" == "HDMI-A-1" ]]; then
+    if [[ "$mon_desc" == "Dell Inc. DELL U2718Q"* ]]; then
         mode_token="modeline 594 3840 4016 4104 4400 2160 2168 2178 2250 +hsync +vsync"
     fi
 
