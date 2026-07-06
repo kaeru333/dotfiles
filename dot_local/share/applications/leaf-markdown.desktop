@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Leaf Markdown Viewer
+Name[ja]=Leaf マークダウンビューア
+Comment=Terminal markdown previewer with live reload
+Comment[ja]=ファイル変更を自動再読込するターミナル Markdown ビューア
+Exec=foot leaf --watch %f
+Terminal=false
+NoDisplay=false
+Icon=text-markdown
+MimeType=text/markdown;
+Categories=Utility;Viewer;

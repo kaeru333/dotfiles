@@ -37,6 +37,8 @@ Library/**                     # AquaSKK 等の ~/Library 配下（macOS のみ�
 .config/fcitx5/**
 .config/libskk/**
 .config/zathura/**
+.config/mimeapps.list
+.local/share/applications/**
 {{ end }}
 # --- karabiner: マシン依存の自動バックアップは常に除外 ---
 .config/karabiner/automatic_backups/**
