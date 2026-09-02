@@ -54,7 +54,7 @@ abbr --show
 - `ls` -> `eza --icons --color`
 - `cat` -> `bat`
 - `...` -> `../..` (任意の位置で展開可能)
-- `cc` -> `claude --dangerously-skip-permissions`
+- `cc` -> `claude` (パーミッションモードは `~/.claude/settings.json` の `permissions.defaultMode` に従う)
 - `te` -> `trans -b :en` (日→英翻訳)
 - `tj` -> `trans -b :ja` (英→日翻訳)
 - `Te` -> `| trans -b :en` (パイプ版、任意の位置で展開可能)

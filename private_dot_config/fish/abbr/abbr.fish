@@ -1,4 +1,5 @@
 abbr -a vi nvim
+abbr -a leaf leaf --watch
 abbr -a :q exit
 abbr -a ls eza --icons --color
 abbr -a lsd eza --icons --color -D
@@ -14,9 +15,10 @@ abbr -a py python3
 abbr -a pyt ~/.local/bin/oj t -c '"python3 main.py"' -d ./tests/
 abbr -a trn tr -d "\n"
 
-# claude code
-abbr -a cc "claude --dangerously-skip-permissions"
-abbr -a ccr "claude --dangerously-skip-permissions -r"
+# claude code (パーミッションモードは ~/.claude/settings.json の
+# permissions.defaultMode = "auto" で決まる．ここでは指定しない)
+abbr -a cc claude
+abbr -a ccr "claude -r"
 abbr -a ca "claude -p"
 
 abbr -a mcal "gcalcli --calendar='日程管理'"
@@ -76,4 +78,10 @@ else
     abbr -a bc "bluetoothctl connect"                                               # BlueZ（macOS の bc(電卓)と衝突するため Linux 限定）
     abbr -a ob "nvim /home/yoshimi/myfiles/ScienceTokyo/nakatalab/study/log/home.md"
     abbr -a ja "node /home/yoshimi/myfiles/something/gemini_cli/gemini.js "
+
+    # Hyprland: ワークスペースのモニター割り当て変更
+    #   wsm    ratatui 製の TUI．h/l で隣のモニターへ動かし a で適用．wsm -l で一覧
+    #   wsmsh  旧 fzf スクリプト．-p の設定書き戻しと -r の設定復帰はこちらにだけある
+    abbr -a wsm hyprws
+    abbr -a wsmsh ~/.config/hypr/scripts/workspace_monitor.sh
 end
