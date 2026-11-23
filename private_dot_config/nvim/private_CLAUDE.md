@@ -41,10 +41,10 @@ fish シェル環境での使用を前提としており、起動時のパフォ
 ├── lazy-lock.json           # プラグインバージョンロック
 ├── lua/
 │   ├── core/
-│   │   ├── options.lua      # vim.opt の設定（fish shell、UTF-8、indent 等）
+│   │   ├── options.lua      # vim.opt の設定（$SHELL 追従、UTF-8、indent 等）
 │   │   ├── keymaps.lua      # グローバルキーマップ（Neotree、Telescope）
 │   │   └── functions/
-│   │       └── tmux_toggle.lua  # tmux 連携機能
+│   │       └── tmux_toggle.lua  # tmux 連携機能（TMUX 環境下のみ有効）
 │   ├── config/
 │   │   ├── lazy.lua         # lazy.nvim の bootstrap と設定
 │   │   └── autocmds.lua     # 自動コマンド（起動時プラグイン更新、FileType別設定等）
@@ -59,6 +59,7 @@ fish シェル環境での使用を前提としており、起動時のパフォ
 │   │   ├── noice.lua           # UI改善
 │   │   ├── nvim-treesitter.lua # シンタックスハイライト
 │   │   ├── copilot.lua         # GitHub Copilot
+│   │   ├── herdr.lua           # herdr-nvim（コードコメント・エージェント連携）
 │   │   └── ...
 │   └── snippets/
 │       └── python.lua       # Python用カスタムスニペット
@@ -68,8 +69,8 @@ fish シェル環境での使用を前提としており、起動時のパフォ
 ### 初期化フロー
 
 1. **init.lua**: `vim.loader.enable()` で Lua モジュールキャッシュ有効化
-2. **core/options.lua** 読み込み: fish シェル、UTF-8、インデント設定など
-3. **core/functions.lua** 読み込み: tmux 連携機能の初期化
+2. **core/options.lua** 読み込み: `$SHELL` 追従、UTF-8、インデント設定など
+3. **core/functions.lua** 読み込み: `TMUX` 環境下のみ tmux 連携機能を初期化（`herdr` 環境ではスキップ）
 4. **config/lazy.lua** 読み込み: lazy.nvim のブートストラップ → `lua/plugins/` 内の全ファイルを自動インポート
 5. **core/keymaps.lua** 読み込み: グローバルキーマップ定義
 6. **config/autocmds.lua** 読み込み: VimEnter で lazy.nvim の自動更新、外部変更の自動再読み込みなど

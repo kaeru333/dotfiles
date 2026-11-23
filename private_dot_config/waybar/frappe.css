@@ -24,3 +24,6 @@
 @define-color base #303446;
 @define-color mantle #292c3c;
 @define-color crust #232634;
+
+/* ワークスペースのアクティブ表示色 (テーマ別) */
+@define-color accent_active #AEF359;

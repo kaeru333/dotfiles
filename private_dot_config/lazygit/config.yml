@@ -1,8 +1,7 @@
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-commit-link-format="lazygit-edit://{commit}"
-
+      command: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-commit-link-format="lazygit-edit://{commit}"
 os:
   # lazygit からファイルを開く際のエディタを nvim に固定
   edit: 'nvim {{filename}}'

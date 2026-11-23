@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# Typeless を「1 つだけ，端末から切り離して，ログ付きで」起動する．
+#
+# 使い方:
+#   typeless-launch            通常起動 (メインウィンドウを開く)
+#   typeless-launch --silent   ログイン時用．ウィンドウを開かずトレイに常駐させる
+#
+# - すでにメインプロセスが動いていれば何もしない (二重起動の防止)．
+# - ログは ~/.cache/typeless/typeless-YYYYmmdd-HHMMSS.log に保存し，
+#   latest.log をその最新ファイルへのシンボリックリンクにする．
+# - 古いログは KEEP_LOGS 個だけ残して削除する．
+set -euo pipefail
+
+readonly TYPELESS_BIN=/opt/Typeless/typeless
+readonly LOG_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/typeless"
+readonly KEEP_LOGS=10
+
+# Typeless のメインプロセスの PID を列挙する (子プロセス・補助プロセスは除く)．
+typeless_main_pids() {
+    local pid args
+    for pid in $(pgrep -f "^${TYPELESS_BIN}( |$)" || true); do
+        args=$(tr '\0' ' ' < "/proc/${pid}/cmdline" 2>/dev/null) || continue
+        case "$args" in
+            *--type=*|*keyboard-helper*) ;;
+            *) echo "$pid" ;;
+        esac
+    done
+}
+
+# 古いログを KEEP_LOGS 個まで減らす．
+prune_logs() {
+    find "$LOG_DIR" -maxdepth 1 -name 'typeless-*.log' -type f -printf '%T@ %p\n' \
+        | sort -rn | tail -n +"$((KEEP_LOGS + 1))" | cut -d' ' -f2- \
+        | xargs -r rm -f --
+}
+
+main() {
+    local extra_args=()
+    if [[ "${1:-}" == "--silent" ]]; then
+        extra_args+=(--system-startup-silent-launch)
+    fi
+
+    if [[ ! -x "$TYPELESS_BIN" ]]; then
+        echo "typeless-launch: ${TYPELESS_BIN} が見つかりません" >&2
+        exit 1
+    fi
+
+    local running
+    running=$(typeless_main_pids | tr '\n' ' ')
+    if [[ -n "$running" ]]; then
+        echo "typeless-launch: すでに起動しています (PID: ${running% })．何もしません．" >&2
+        exit 0
+    fi
+
+    mkdir -p "$LOG_DIR"
+    local log_file
+    log_file="${LOG_DIR}/typeless-$(date +%Y%m%d-%H%M%S).log"
+    ln -sfn "$(basename "$log_file")" "${LOG_DIR}/latest.log"
+    prune_logs
+
+    # 自動起動の .desktop と同じ環境変数・引数で起動する．
+    # setsid で端末から切り離すので，起動元の端末を閉じても終了しない．
+    cd "$HOME"
+    TYPELESS_SKIP_SECRET_STORE=1 setsid "$TYPELESS_BIN" --password-store=basic \
+        "${extra_args[@]}" >"$log_file" 2>&1 </dev/null &
+    disown
+    echo "typeless-launch: 起動しました (ログ: ${log_file})"
+}
+
+main "$@"

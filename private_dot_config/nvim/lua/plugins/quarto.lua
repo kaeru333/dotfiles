@@ -4,7 +4,9 @@ return {
     "jmbuhr/otter.nvim",
     "nvim-treesitter/nvim-treesitter",
   },
-  filetype = { "quarto", "qmd" },
+  -- lazy.nvim の遅延ロードキーは `ft`．`filetype` は無効キーで無視され，
+  -- 結果として起動時に常時ロードされてしまうため修正
+  ft = { "quarto", "qmd" },
   opts = {
     debug = false,
     closePreviewOnExit = true,

@@ -31,5 +31,11 @@ require("lazy").setup({
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
   -- automatically check for plugin updates
-  checker = { enabled = true },
+  -- Claude Code の外部エディター (Ctrl+G) として起動したときは無効にする．
+  -- 終了処理 (VimLeavePre の LSP 終了待ち) 中に checker が動くと，
+  -- lazy の非同期処理が止まったまま同期待ちに入り，nvim が終了できなくなるため．
+  checker = { enabled = vim.env.CLAUDECODE == nil },
+  -- nvim-treesitter(main) のように大きいリポジトリは既定の 120 秒では
+  -- clone が途中で切断されるため延長する
+  git = { timeout = 600 },
 })

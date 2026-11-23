@@ -8,7 +8,7 @@ Fish shell の設定ファイル群。プラグイン管理に Fisher を使用�
 
 ## ディレクトリ構成
 
-- `config.fish` - メインの設定ファイル。環境変数、PATH、tmux 自動起動などを定義
+- `config.fish` - メインの設定ファイル。環境変数、PATH、herdr 自動起動などを定義
 - `abbr/abbr.fish` - 省略形 (abbreviations) の定義。`config.fish` から source される
 - `myconf.d/bobthefish.fish` - bobthefish テーマの設定。`config.fish` から source される
 - `conf.d/` - 自動読み込みされる設定ファイル (fzf, z, nvm, fnm など)
@@ -47,6 +47,7 @@ abbr --show
 - `trash <file>` - ファイルを `~/.trash` に移動 (タイムスタンプ付き)
 - `submit` - AtCoder 用提出コマンド (acc + pypy)
 - `md_to_pdf <input.md> <output.pdf>` - Pandoc + LuaLaTeX で日本語対応 PDF 変換
+- `tvpn` - 大学 VPN (F5 SSL-VPN) に openconnect で接続．ブラウザで取得した MRHSession を貼り付けて使う．無通信切断対策の通信つき
 
 ## 主要な省略形
 
@@ -54,7 +55,8 @@ abbr --show
 - `ls` -> `eza --icons --color`
 - `cat` -> `bat`
 - `...` -> `../..` (任意の位置で展開可能)
-- `cc` -> `claude` (パーミッションモードは `~/.claude/settings.json` の `permissions.defaultMode` に従う)
+- `agy` -> `agy --dangerously-skip-permissions`（Antigravity CLI）
+- `cc` -> `claude --dangerously-skip-permissions`（旧 Claude Code 用）
 - `te` -> `trans -b :en` (日→英翻訳)
 - `tj` -> `trans -b :ja` (英→日翻訳)
 - `Te` -> `| trans -b :en` (パイプ版、任意の位置で展開可能)
@@ -72,5 +74,6 @@ abbr --show
 ## 注意事項
 
 - `config.fish` にはキャッシュ機構があり、`$FISH_CACHE_DIR/config.fish` に動的設定をキャッシュする
-- tmux の自動起動が設定されており、インタラクティブシェル起動時に既存セッションにアタッチまたは新規作成する
+- herdr の自動起動が設定されており、インタラクティブシェル起動時に `HERDR_ENV` / `TMUX` が未設定なら `herdr` を起動する
+- ※ シェル環境は `~/.config/zsh/` への段階的移行を進めている
 - Wayland 環境変数の自動検出機能あり

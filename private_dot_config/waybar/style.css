@@ -1,4 +1,5 @@
-@import "frappe.css";
+/* colors.css は theme-toggle が frappe.css (dark) / latte.css (light) へ張り替える */
+@import "colors.css";
 
 * {
   font-family: CodeNewRoman Nerd Font Propo;
@@ -26,8 +27,8 @@
 }
 
 #workspaces button.active {
-  /* color: @sky; default*/ 
-  color: #AEF359;
+  /* color: @sky; default*/
+  color: @accent_active;
   border-radius: 1rem;
 }
 

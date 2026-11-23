@@ -1,0 +1,98 @@
+onboarding = false
+# herdr 設定ファイル
+# tmux (~/.config/tmux/tmux.conf) に寄せたキーバインド．
+# 反映方法: `herdr server reload-config` もしくは prefix+shift+r で再読み込み．
+
+[keys]
+# prefix を tmux と同じ ctrl+s に変更 (herdr の既定は ctrl+b) ．
+prefix = "ctrl+s"
+
+# --- ペイン分割 ---
+# tmux では  + = 左右分割 (split-window -h) ，  - = 上下分割 (split-window -v) ．
+# herdr の split_vertical   は「縦の仕切り」= 左右に分割 → tmux の + に対応，
+#         split_horizontal は「横の仕切り」= 上下に分割 → tmux の - に対応．
+# ※もし + / - の向きが逆だった場合は，この 2 行の右辺 (plus と minus) を入れ替える．
+split_vertical   = "prefix+plus"
+split_horizontal = "prefix+minus"
+
+# --- ペイン移動 (tmux の h/j/k/l ．herdr 既定と同じだが明示しておく) ---
+focus_pane_left  = "prefix+h"
+focus_pane_down  = "prefix+j"
+focus_pane_up    = "prefix+k"
+focus_pane_right = "prefix+l"
+
+# --- ペインリサイズ ---
+# herdr はモーダル方式．prefix+r で resize モードに入り，h/j/k/l で伸縮，esc で抜ける．
+# (tmux の prefix+H/J/K/L の 1 発リサイズは末尾の任意ブロックを参照)
+resize_mode = "prefix+r"
+
+# 設定リロード (tmux の prefix r 相当．prefix+r は resize に使うため shift 付き) ．
+reload_config = "prefix+shift+r"
+
+# --- agent 切り替え (herdr ネイティブ．ポップアップも枠も出ない) ---
+# サイドバーの agents パネルの並び順で 1 つずつ移動し，端まで行くと巡回する．
+# prefix を挟まない直接キーなので，ctrl+shift を押したまま矢印を連打できる．
+# alt は hyprland 用に空けておく方針のため使わない．
+# hyprland (ctrl+shift 系 bind なし) と foot (既定のまま) の両方と衝突しないことを確認済み．
+previous_agent = "ctrl+shift+up"
+next_agent     = "ctrl+shift+down"
+
+# 検索付きの一覧から選びたいとき用の herdr 標準ピッカー (session navigator) ．
+# 既定は prefix+g．↑/↓ (j/k) で移動，/ で検索，b/w/i/d/a で状態絞り込み，enter で移動．
+goto = "prefix+g"
+
+# --- agent ピッカー (プラグイン agent-picker) ---
+# prefix+a で起動中の agent を一覧表示し，上下キーで選んでフォーカスを移す．
+# workspace の prefix+w と同じ感覚で使える．
+# プラグイン本体: ~/Projects/herdr (herdr plugin link 済み)
+[[keys.command]]
+key = "prefix+a"
+type = "shell"
+command = "herdr plugin pane open --plugin agent-picker --entrypoint picker --focus"
+
+# --- 配色モード (ライト/ダーク) の一括トグル ---
+# ghostty ・fish ・neovim ・herdr ・waybar をまとめて切り替える．
+[[keys.command]]
+key = "prefix+shift+t"
+type = "shell"
+command = '[ -x "$HOME/.local/bin/theme-toggle" ] && "$HOME/.local/bin/theme-toggle" toggle'
+
+# --- (任意) tmux の prefix+H/J/K/L 相当の「1 発リサイズ」 ---
+# 上の resize_mode (モーダル) が herdr ネイティブの方法．
+# tmux のように直接伸縮したい場合は以下のコメントを外す．
+# シェルコマンドから herdr CLI を呼ぶ (--current は HERDR_PANE_ID で解決) ．
+# 効かない場合は resize_mode を使うこと．amount は 0.0-1.0 の割合．
+# [[keys.command]]
+# key = "prefix+shift+h"
+# type = "shell"
+# command = "herdr pane resize --current --direction left --amount 0.08"
+# [[keys.command]]
+# key = "prefix+shift+j"
+# type = "shell"
+# command = "herdr pane resize --current --direction down --amount 0.08"
+# [[keys.command]]
+# key = "prefix+shift+k"
+# type = "shell"
+# command = "herdr pane resize --current --direction up --amount 0.08"
+# [[keys.command]]
+# key = "prefix+shift+l"
+# type = "shell"
+# command = "herdr pane resize --current --direction right --amount 0.08"
+
+[ui.sound]
+enabled = false
+
+[ui.toast]
+delivery = "herdr"
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+agent_panel_sort = "spaces"
+[theme]
+# name は theme-toggle が tokyo-night (dark) / tokyo-night-day (light) に書き換える．
+name = "tokyo-night"
+auto_switch = false
+
+[experimental]
+kitty_graphics = true

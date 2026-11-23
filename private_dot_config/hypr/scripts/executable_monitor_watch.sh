@@ -81,6 +81,9 @@ listen_events() {
                     log "イベント検出: $line"
                     # イベント後少し待ってからモニター状態を確認
                     sleep 1
+                    # 最後の外部モニターが外れると有効モニターが 0 枚になり，
+                    # 描画先を失って操作不能になる．先に内蔵画面を戻しておく．
+                    "$HYPR_DIR/scripts/ensure_display.sh"
                     try_apply
                     ;;
             esac

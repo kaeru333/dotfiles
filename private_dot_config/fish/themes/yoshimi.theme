@@ -1,0 +1,68 @@
+# name: Yoshimi
+# 端末の配色モードに追従する自作テーマ．
+# dark: 従来の配色 (ayu mirage 系) / light: tokyo-night-day
+[light]
+# preferred_background: e1e2e7
+fish_color_normal 3760bf
+fish_color_autosuggestion 848cb5
+fish_color_cancel --reverse
+fish_color_command 007197
+fish_color_comment 848cb5
+fish_color_cwd 2e7de9
+fish_color_cwd_root red
+fish_color_end b15c00
+fish_color_error f52a65
+fish_color_escape 9854f1
+fish_color_history_current --bold
+fish_color_host normal
+fish_color_host_remote 8c6c3e
+fish_color_keyword 9854f1
+fish_color_match f52a65
+fish_color_operator 587539
+fish_color_option 9854f1
+fish_color_param 7847bd
+fish_color_quote 8c6c3e
+fish_color_redirection 3760bf
+fish_color_search_match --background=b7c1e3
+fish_color_selection --background=b7c1e3
+fish_color_status red
+fish_color_user brgreen
+fish_color_valid_path --underline
+fish_pager_color_completion 3760bf
+fish_pager_color_description 848cb5
+fish_pager_color_prefix 007197 --bold --underline
+fish_pager_color_progress 848cb5
+fish_pager_color_selected_background --background=b7c1e3
+
+[dark]
+# preferred_background: 25281a
+fish_color_normal CBCCC6
+fish_color_autosuggestion 707A8C
+fish_color_cancel --reverse
+fish_color_command 5CCFE6
+fish_color_comment 5C6773
+fish_color_cwd 73D0FF
+fish_color_cwd_root red
+fish_color_end F29E74
+fish_color_error FF3333
+fish_color_escape 95E6CB
+fish_color_history_current --bold
+fish_color_host normal
+fish_color_host_remote F9E2AF
+fish_color_keyword 5CCFE6
+fish_color_match F28779
+fish_color_operator FFCC66
+fish_color_option CBCCC6
+fish_color_param CBCCC6
+fish_color_quote BAE67E
+fish_color_redirection D4BFFF
+fish_color_search_match --background=FFCC66
+fish_color_selection --background=FFCC66
+fish_color_status red
+fish_color_user brgreen
+fish_color_valid_path --underline
+fish_pager_color_completion normal
+fish_pager_color_description B3A06D
+fish_pager_color_prefix normal --bold --underline
+fish_pager_color_progress brwhite --background=cyan
+fish_pager_color_selected_background --background=FFCC66

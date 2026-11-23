@@ -1,5 +1,6 @@
 set -g theme_nerd_fonts yes
-set -g theme_color_scheme dark
+# theme_color_scheme は conf.d/theme.fish が $theme_mode に応じて設定する
+# (ここで固定すると conf.d の設定を上書きしてしまうため書かない)
 set -g default_user bobthecow
 set -g theme_powerline_fonts yes
 set -g theme_newline_cursor yes

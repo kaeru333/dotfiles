@@ -1,0 +1,216 @@
+#!/usr/bin/env bash
+# 配色モード (light / dark) を foot ・fish ・neovim ・herdr ・waybar でまとめて切り替える．
+#
+#   theme-toggle              現在のモードを表示する
+#   theme-toggle status       同上
+#   theme-toggle toggle       ライトとダークを反転する
+#   theme-toggle light|dark   明示的に指定する
+#
+# オプション:
+#   --restart     foot を再起動して確実に反映する (透過がシグナルで切り替わらない場合)
+#   --no-restart  foot を再起動しない (既定)
+#
+# ライト: tokyo-night-day + 透過なし / ダーク: 従来配色 + 透過 0.75
+
+export PATH="$HOME/.local/bin:$PATH"
+
+STATE_FILE="${XDG_STATE_HOME:-$HOME/.local/state}/theme-mode"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
+FOOT_THEME_INI="$CONFIG_DIR/foot/theme.ini"
+GHOSTTY_THEME="$CONFIG_DIR/ghostty/theme"
+HERDR_CONF="$CONFIG_DIR/herdr/config.toml"
+WAYBAR_DIR="$CONFIG_DIR/waybar"
+RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+
+# モードごとの割当．設定ファイルがあれば上書きされる．
+CLAUDE_THEME_LIGHT="light-daltonized"
+CLAUDE_THEME_DARK="dark-daltonized"
+HERDR_THEME_LIGHT="tokyo-night-day"
+HERDR_THEME_DARK="tokyo-night"
+WAYBAR_CSS_LIGHT="latte.css"
+WAYBAR_CSS_DARK="frappe.css"
+# shellcheck source=/dev/null
+[ -f "$CONFIG_DIR/theme-toggle.conf" ] && . "$CONFIG_DIR/theme-toggle.conf"
+
+restart_foot=0
+action=""
+
+for arg in "$@"; do
+	case "$arg" in
+	--restart) restart_foot=1 ;;
+	--no-restart) restart_foot=0 ;;
+	light | dark | toggle | status) action="$arg" ;;
+	-h | --help)
+		sed -n '2,17p' "$0" | sed 's/^# \?//'
+		exit 0
+		;;
+	*)
+		echo "theme-toggle: 不明な引数: $arg" >&2
+		exit 1
+		;;
+	esac
+done
+
+current_mode() {
+	local mode
+	mode=$(cat "$STATE_FILE" 2>/dev/null)
+	[ "$mode" = light ] && echo light || echo dark
+}
+
+if [ -z "$action" ] || [ "$action" = status ]; then
+	current_mode
+	exit 0
+fi
+
+mode="$action"
+if [ "$action" = toggle ]; then
+	[ "$(current_mode)" = light ] && mode=dark || mode=light
+fi
+
+mkdir -p "$(dirname "$STATE_FILE")"
+printf '%s\n' "$mode" >"$STATE_FILE"
+
+# --- ghostty ----------------------------------------------------------------
+if [ -d "$CONFIG_DIR/ghostty" ]; then
+	if [ "$mode" = light ]; then
+		cat >"$GHOSTTY_THEME" <<EOF
+# このファイルは theme-toggle が書き換える．手で編集しても次回のトグルで上書きされる．
+theme = TokyoNight Day
+background-opacity = 1.0
+EOF
+	else
+		cat >"$GHOSTTY_THEME" <<EOF
+# このファイルは theme-toggle が書き換える．手で編集しても次回のトグルで上書きされる．
+theme = TokyoNight
+background-opacity = 0.85
+EOF
+	fi
+	pkill -SIGUSR2 -x ghostty 2>/dev/null
+fi
+
+# --- foot -------------------------------------------------------------------
+# 新しく開くウィンドウの初期テーマ．色と透過は foot.ini の [colors-*] が持つ．
+cat >"$FOOT_THEME_INI" <<EOF
+# このファイルは theme-toggle が書き換える．手で編集しても次回のトグルで上書きされる．
+# 新しく開く foot ウィンドウの初期テーマを決める．
+[main]
+initial-color-theme=$mode
+EOF
+
+# 起動中のウィンドウへ通知する (SIGUSR1=dark, SIGUSR2=light) ．
+if [ "$mode" = light ]; then
+	pkill -USR2 -x foot 2>/dev/null
+	pkill -USR2 -x footclient 2>/dev/null
+else
+	pkill -USR1 -x foot 2>/dev/null
+	pkill -USR1 -x footclient 2>/dev/null
+fi
+
+# --- herdr ------------------------------------------------------------------
+if [ -f "$HERDR_CONF" ]; then
+	if [ "$mode" = light ]; then
+		herdr_theme="$HERDR_THEME_LIGHT"
+	else
+		herdr_theme="$HERDR_THEME_DARK"
+	fi
+	if [ -n "$herdr_theme" ]; then
+		# [theme] セクションの name 行だけを書き換える
+		sed -i -E "/^\[theme\]/,/^\[/ s|^name = \".*\"|name = \"$herdr_theme\"|" "$HERDR_CONF"
+		command -v herdr >/dev/null && herdr server reload-config >/dev/null 2>&1
+	fi
+fi
+
+# --- fish -------------------------------------------------------------------
+# universal 変数なので，起動中のすべての fish セッションへ即座に伝播する．
+command -v fish >/dev/null && fish -c "set -U theme_mode $mode" 2>/dev/null
+
+# --- waybar -----------------------------------------------------------------
+if [ -d "$WAYBAR_DIR" ]; then
+	if [ "$mode" = light ]; then
+		waybar_css="$WAYBAR_CSS_LIGHT"
+	else
+		waybar_css="$WAYBAR_CSS_DARK"
+	fi
+	if [ -n "$waybar_css" ] && [ -f "$WAYBAR_DIR/$waybar_css" ]; then
+		ln -sfn "$waybar_css" "$WAYBAR_DIR/colors.css"
+		pkill -USR2 -x waybar 2>/dev/null
+	fi
+fi
+
+# --- Claude Code ------------------------------------------------------------
+# モードごとの割当は theme-toggle.conf の CLAUDE_THEME_LIGHT / CLAUDE_THEME_DARK で決まる．
+# 値が空のときは Claude Code の設定に触らない．
+CLAUDE_SETTINGS="$HOME/.claude/settings.json"
+if [ "$mode" = light ]; then
+	claude_theme="$CLAUDE_THEME_LIGHT"
+else
+	claude_theme="$CLAUDE_THEME_DARK"
+fi
+if [ -n "$claude_theme" ] && [ -f "$CLAUDE_SETTINGS" ] && command -v jq >/dev/null; then
+	tmp=$(mktemp)
+	if jq --arg t "$claude_theme" '.theme = $t' "$CLAUDE_SETTINGS" >"$tmp" 2>/dev/null; then
+		mv "$tmp" "$CLAUDE_SETTINGS"
+	else
+		rm -f "$tmp"
+	fi
+fi
+
+# --- neovim -----------------------------------------------------------------
+# 起動中のインスタンスへ反映する (起動時は core.theme が状態ファイルを読む) ．
+shopt -s nullglob
+for sock in "$RUNTIME_DIR"/nvim.*.0; do
+	timeout 2 nvim --server "$sock" --remote-expr \
+		"luaeval(\"pcall(require('core.theme').apply, '$mode')\")" >/dev/null 2>&1
+done
+shopt -u nullglob
+
+# --- foot の再起動 (任意) ---------------------------------------------------
+# 透過の変更がシグナルで反映されない場合の保険．herdr のセッションはサーバが
+# 保持しているため，herdr を動かしているウィンドウは再起動しても作業を失わない．
+descendant_info() {
+	# $1 の子孫プロセスについて "comm cmdline" を1行ずつ出力する
+	local pid=$1 child
+	for child in $(pgrep -P "$pid" 2>/dev/null); do
+		printf '%s\t%s\n' "$(cat "/proc/$child/comm" 2>/dev/null)" \
+			"$(tr '\0' ' ' <"/proc/$child/cmdline" 2>/dev/null)"
+		descendant_info "$child"
+	done
+}
+
+if [ "$restart_foot" = 1 ] && command -v hyprctl >/dev/null && command -v jq >/dev/null; then
+	skipped=0
+	while IFS=$'\t' read -r addr pid ws cls; do
+		[ -n "$addr" ] || continue
+		term_bin="foot"
+		[ "$cls" = "com.mitchellh.ghostty" ] && term_bin="ghostty"
+		info=$(descendant_info "$pid")
+		# 起動しなおすコマンドを決める．未保存の作業を壊さないため，
+		# herdr かシェルだけが動いているウィンドウ以外は再起動しない．
+		herdr_cmd=$(awk -F'\t' '$1 == "herdr" { print $2; exit }' <<<"$info")
+		others=$(awk -F'\t' '$1 != "herdr" && $1 !~ /^(fish|bash|zsh|sh|dash)$/ { print $1 }' <<<"$info")
+		if [ -n "$herdr_cmd" ]; then
+			cmd="$term_bin -e $herdr_cmd"
+		elif [ -z "$others" ]; then
+			cmd="$term_bin"
+		else
+			skipped=$((skipped + 1))
+			continue
+		fi
+
+		if [[ "$ws" =~ ^-?[0-9]+$ ]]; then
+			target="workspace $ws silent"
+		else
+			target="workspace name:$ws silent"
+		fi
+		hyprctl dispatch exec "[$target] $cmd" >/dev/null 2>&1
+		sleep 0.5
+		hyprctl dispatch closewindow "address:$addr" >/dev/null 2>&1
+	done < <(hyprctl clients -j 2>/dev/null |
+		jq -r '.[] | select(.class == "foot" or .class == "com.mitchellh.ghostty") | "\(.address)\t\(.pid)\t\(.workspace.name)\t\(.class)"')
+
+	if [ "$skipped" -gt 0 ] && command -v notify-send >/dev/null; then
+		notify-send "theme-toggle" "作業中のプログラムがある端末 ${skipped} 個は再起動しませんでした．色のみ切り替えています．"
+	fi
+fi
+
+echo "$mode"

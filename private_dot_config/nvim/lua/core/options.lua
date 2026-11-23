@@ -24,7 +24,7 @@ local options = {
 	undofile = true,
 	updatetime = 300,
 	writebackup = false,
-	shell = "fish",
+	shell = vim.env.SHELL or "fish",
 	backupskip = { "/tmp/*", "/private/tmp/*" },
 	expandtab = true,
 	shiftwidth = 2,
@@ -39,7 +39,7 @@ local options = {
 	winblend = 0,
 	wildoptions = "pum",
 	pumblend = 0,
-	background = "dark",
+	-- background は core.theme が配色モードに応じて設定する
 	scrolloff = 8,
 	sidescrolloff = 8,
 	guifont = "monospace:h17",
@@ -53,8 +53,8 @@ for k, v in pairs(options) do
 	vim.opt[k] = v
 end
 
--- Neovimが使うシェルをfishに設定
-vim.o.shell = "fish"
+-- Neovimが使うシェルをログインシェル ($SHELL) に追従させる (未設定時は fish)
+vim.o.shell = vim.env.SHELL or "fish"
 
 -- シェルを対話的モード(-i)で起動し、コマンド(-c)を実行するよう設定
 vim.o.shellcmdflag = "-ic"

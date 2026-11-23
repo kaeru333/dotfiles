@@ -31,7 +31,7 @@
         "return-type": "json",
         "interval": 5,
         "format": "🖥️{}",
-        "on-click": "foot -e btop"
+        "on-click": "ghostty -e btop"
     },
     "clock": {
         "timezone": "Asia/Tokyo",

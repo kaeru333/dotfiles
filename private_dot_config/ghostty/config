@@ -1,5 +1,6 @@
 font-family = 0xProto Nerd Font Mono
-font-size = 14
+font-family = CodeNewRoman Nerd Font Propo
+font-size = 12
 
 background-opacity = 0.85
 window-decoration = false
@@ -30,3 +31,9 @@ keybind = all:ctrl+space=ignore
 
 # Ctrl+JをAquaSKKのかな/英数トグルに渡す（デフォルトでは LF が送られてIMEに届かない）
 keybind = all:ctrl+j=ignore
+
+# Shift+Return で § (U+00A7) を送出する (アプリ側で Shift+Return を判別するため，foot.ini 互換)
+keybind = shift+enter=text:\xc2\xa7
+
+# theme-toggle が書き出す動的テーマ設定 (存在しない場合は無視される)
+config-file = ?theme

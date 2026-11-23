@@ -9,6 +9,26 @@ return {
         filetypes = { 'python' },
         root_dir = vim.fs.root(0, {'.git', 'pyproject.toml', 'setup.py'}),
         single_file_support = true,
+        on_init = function(client)
+          -- 開いたファイルから上に向かって .venv を探し，その python を pyright に使わせる．
+          -- ssf-geoai のように worktree ごとに venv が分かれている構成では，これが無いと
+          -- システムの python を見てしまい torch や physicsnemo の import が軒並み解決できない．
+          -- 見つからなければ何もしないので，従来どおりの挙動に戻る．
+          local base = vim.api.nvim_buf_get_name(0)
+          base = base ~= '' and vim.fs.dirname(base) or vim.fn.getcwd()
+          local found = vim.fs.find('.venv', { upward = true, path = base, type = 'directory' })[1]
+          if not found then
+            return
+          end
+          local py = found .. '/bin/python'
+          if not vim.uv.fs_stat(py) then
+            return
+          end
+          client.settings = vim.tbl_deep_extend('force', client.settings or {}, {
+            python = { pythonPath = py },
+          })
+          client:notify('workspace/didChangeConfiguration', { settings = client.settings })
+        end,
       }
 
       -- LaTeX: texlab
