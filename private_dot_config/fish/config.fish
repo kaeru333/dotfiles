@@ -51,20 +51,21 @@ function fuck -d "Correct your previous console command"
     end
 end
 
-if status is-interactive
-    # 既存のセッションがなければ、新規作成
-    if tmux ls &> /dev/null
-        # 既存のセッションにアタッチ
-        tmux attach-session
-    else
-        # 新規セッションを作成し、tmux-resurrectでセッションを自動復元
-        set -l resurrect_script $HOME/.config/tmux/plugins/tmux-resurrect/scripts/restore.sh
-        if test -f $resurrect_script
-            tmux new-session \; run-shell $resurrect_script
-        else
-            tmux new-session
-        end
-    end
+# herdr の自動起動．
+# herdr はクライアント/サーバ型のマルチプレクサで，引数なしの `herdr` は
+# 「永続セッションがあればアタッチ，なければ起動」を 1 コマンドで行う．
+# tmux の `new-session -A` 相当なので，セッション一覧を見て分岐する必要はない．
+#
+# 各ガードの意図:
+#   status is-interactive … スクリプトや補完から TUI を起動させない
+#   not set -q HERDR_ENV  … herdr のペイン内は HERDR_ENV=1 なので再帰起動を防ぐ
+#   not set -q TMUX       … 手動で tmux を使っている間は多重化しない
+#   type -q herdr         … herdr 未導入のマシンでも config を壊さない
+#
+# exec していないので，detach すると fish のプロンプトに戻る．
+# detach と同時に端末ごと閉じたい場合は `herdr` を `exec herdr` に変える．
+if status is-interactive; and not set -q HERDR_ENV; and not set -q TMUX; and type -q herdr
+    herdr
 end
 
 function ya
@@ -99,3 +100,13 @@ source $CONFIG_CACHE
 set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
 
 functions -q fish_postexec
+
+# Google Cloud SDK (PFN インターンの Cluster Service 用)
+if test -f "$HOME/google-cloud-sdk/path.fish.inc"
+    source "$HOME/google-cloud-sdk/path.fish.inc"
+end
+git gtr init fish | source
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/yoshimi/.local/bin" $PATH

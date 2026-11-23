@@ -5,9 +5,9 @@
 
 # --- リポジトリのメタドキュメント（$HOME へは展開しない。先頭 / でルート限定）---
 #   .config/*/README.md（各設定の説明）は展開対象に残す。
-/README.md
-/README-macos.md
-/LICENSE
+README.md
+README-macos.md
+LICENSE
 
 # =============================================================================
 # OS 分岐 — 同一リポジトリで Linux / macOS 両対応
@@ -97,6 +97,11 @@ Library/**                     # AquaSKK 等の ~/Library 配下（macOS のみ�
 # --- tmux plugins（tpm が自動 DL・管理するため chezmoi 対象外）---
 .config/tmux/plugins/**
 
+# --- 配色モードトグル: theme-toggle が生成する状態依存ファイル ---
+.config/foot/theme.ini         # 現在の初期テーマ (light/dark)
+.config/ghostty/theme          # 現在の初期テーマ (light/dark)
+.config/waybar/colors.css      # frappe.css / latte.css へのシンボリックリンク
+
 # --- hypr: 一時ファイル・Claude ローカル設定 ---
 .config/hypr/.claude/**
 .config/hypr/PROGRESS.md
@@ -137,3 +142,61 @@ Library/Application Support/AquaSKK/skk-jisyo.utf8
 # --- Raycast (macOS): 設定は暗号化 sqlite で移行不可。手動エクスポート(.rayconfig)で運用 ---
 Library/Application Support/com.raycast.macos/**
 Library/Preferences/com.raycast.macos.plist
+# --- zsh: 秘匿情報・プラグイン本体（run_once_after_45 が clone 管理）---
+.config/zsh/secrets.zsh
+.config/zsh/plugins/**
+
+# --- Gemini / Antigravity CLI & Claude Code: ランタイム・キャッシュ・機密除外 ---
+.gemini/antigravity-cli/**
+.gemini/google_accounts.json
+.gemini/installation_id
+.gemini/oauth_creds.json
+.gemini/projects.json*
+.gemini/state.json
+.gemini/settings.json*
+.gemini/history/**
+.gemini/tmp/**
+.gemini/config/config.json
+.gemini/config/.migrated
+.gemini/config/mcp_config.json
+.gemini/config/import_manifest.json
+.gemini/config/plugins/**
+.gemini/config/projects/**
+
+.claude/.credentials.json
+.claude/.last-*
+.claude/backups/**
+.claude/bash-commands.log
+.claude/cost-tracker.log
+.claude/cache/**
+.claude/chrome/**
+.claude/config.json
+.claude/daemon*
+.claude/debug/**
+.claude/downloads/**
+.claude/file-history/**
+.claude/history.jsonl
+.claude/homunculus/**
+.claude/ide/**
+.claude/jobs/**
+.claude/metrics/**
+.claude/mobile-mcp.disabled.json
+.claude/paste-cache/**
+.claude/plan/**
+.claude/plans/**
+.claude/plugins/**
+.claude/PROGRESS.md
+.claude/projects/**
+.claude/session-data/**
+.claude/session-env/**
+.claude/sessions/**
+.claude/settings.local.json
+.claude/settings.json.bak*
+.claude/settings.json.doctor-backup
+.claude/settings.json.orig
+.claude/shell-snapshots/**
+.claude/state/**
+.claude/stats-cache.json
+.claude/tasks/**
+.claude/teams/**
+.claude/telemetry/**

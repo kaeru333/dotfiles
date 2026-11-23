@@ -1,0 +1,34 @@
+{
+  "claude-session-and-fallback": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "python3 /home/yoshimi/.gemini/config/hooks/session-start.py",
+        "timeout": 10
+      }
+    ]
+  },
+  "claude-security-and-pytest-guard": {
+    "PreToolUse": [
+      {
+        "matcher": "read_file|edit_file|write_file|run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /home/yoshimi/.gemini/config/hooks/pre-tool-guard.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "claude-english-practice-logger": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "python3 /home/yoshimi/.gemini/config/hooks/stop-english-log.py",
+        "timeout": 10
+      }
+    ]
+  }
+}

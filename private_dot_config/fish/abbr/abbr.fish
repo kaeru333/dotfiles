@@ -15,11 +15,13 @@ abbr -a py python3
 abbr -a pyt ~/.local/bin/oj t -c '"python3 main.py"' -d ./tests/
 abbr -a trn tr -d "\n"
 
-# claude code (パーミッションモードは ~/.claude/settings.json の
-# permissions.defaultMode = "auto" で決まる．ここでは指定しない)
-abbr -a cc claude
-abbr -a ccr "claude -r"
+# claude code
+abbr -a cc "claude --dangerously-skip-permissions"
+abbr -a ccr "claude --dangerously-skip-permissions -r"
 abbr -a ca "claude -p"
+
+# antigravity cli
+abbr -a agy "agy --dangerously-skip-permissions"
 
 abbr -a mcal "gcalcli --calendar='日程管理'"
 abbr -a mm nbs
