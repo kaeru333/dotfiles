@@ -1,21 +1,31 @@
-function nbs --description "herdr workspace の label に紐づく nb ノートを開く/作成する"
-    # herdr の pane 外なら終了
-    if test "$HERDR_ENV" != 1
-        echo "herdr の pane 外では使えません"
-        return 1
-    end
+function nbs --description "herdr workspace の label / tmux セッション名に紐づく nb ノートを開く/作成する"
+    argparse p/print n/name -- $argv
+    or return 1
 
-    if test -z "$HERDR_WORKSPACE_ID"
-        echo "HERDR_WORKSPACE_ID が設定されていません"
-        return 1
+    # タイトル: 引数 > herdr のワークスペース label > tmux のセッション名
+    set -l label $argv[1]
+    if test -z "$label"
+        if set -q HERDR_ENV
+            # ペインはワークスペース間を移動できるので，現在のペインから workspace_id を引く
+            set -l ws_id (command herdr pane current 2>/dev/null | jq -r '.result.pane.workspace_id // empty')
+            test -n "$ws_id"; or set ws_id $HERDR_WORKSPACE_ID
+            set label (command herdr workspace get "$ws_id" 2>/dev/null | jq -r '.result.workspace.label // empty')
+        else if set -q TMUX
+            set label (tmux display-message -p '#S')
+        else
+            echo "herdr/tmux の外ではタイトルを引数で指定してください" >&2
+            return 1
+        end
     end
-
-    # workspace の label をノート名として使う (tmux セッション名の代替)
-    set -l label (command herdr workspace get "$HERDR_WORKSPACE_ID" 2>/dev/null | jq -r '.result.workspace.label // empty')
 
     if test -z "$label"
-        echo "workspace の label を取得できませんでした (herdr workspace rename でラベルを付けてください)"
+        echo "workspace の label を取得できませんでした (herdr workspace rename でラベルを付けてください)" >&2
         return 1
+    end
+
+    if set -q _flag_name
+        echo $label
+        return 0
     end
 
     # label とタイトルが完全一致するノートを検索
@@ -30,9 +40,18 @@ function nbs --description "herdr workspace の label に紐づく nb ノート�
         set -l quoted (string match -r '^\S+ · "(.*)"$' -- $title)
         and set title $quoted[2]
         if test "$title" = "$label"
-            command nb edit $id
+            if set -q _flag_print
+                command nb show --print --no-color $id
+            else
+                command nb edit $id
+            end
             return 0
         end
+    end
+
+    if set -q _flag_print
+        echo "ノート '$label' はありません" >&2
+        return 1
     end
 
     # 見つからなければ新規作成

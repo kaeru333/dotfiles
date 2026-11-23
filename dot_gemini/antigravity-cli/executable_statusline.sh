@@ -49,9 +49,11 @@ parts=()
 parts+=("${C_MODE}${MODE}${R}")
 parts+=("${C_MODEL}${MODEL}${R}")
 
-if [ -n "$EFFORT" ] && [[ "${MODEL,,}" != *"(${EFFORT,,})"* ]]; then
+shopt -s nocasematch
+if [ -n "$EFFORT" ] && [[ "$MODEL" != *"($EFFORT)"* ]]; then
   parts+=("${C_EFFORT}${EFFORT}${R}")
 fi
+shopt -u nocasematch
 
 parts+=("${C_CTX}ctx ${USED_FMT}%${R}")
 

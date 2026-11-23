@@ -64,7 +64,11 @@ end
 #
 # exec していないので，detach すると fish のプロンプトに戻る．
 # detach と同時に端末ごと閉じたい場合は `herdr` を `exec herdr` に変える．
-if status is-interactive; and not set -q HERDR_ENV; and not set -q TMUX; and type -q herdr
+if status is-interactive
+    and not set -q HERDR_ENV
+    and not set -q TMUX
+    and test "$TERM_PROGRAM" != vscode
+    and type -q herdr
     herdr
 end
 
@@ -83,7 +87,8 @@ end
 set -U FISH_CACHE_DIR "$HOME/.cache/fish"
 set -l CONFIG_CACHE "$FISH_CACHE_DIR"/config.fish
 
-if test "$FISH_CONFIG" -nt "$CONFIG_CACHE"
+# キャッシュが無いか config.fish の方が新しければ作り直す
+if not test -f "$CONFIG_CACHE"; or test (status filename) -nt "$CONFIG_CACHE"
     mkdir -p $FISH_CACHE_DIR
     echo '' >$CONFIG_CACHE
 
@@ -101,12 +106,22 @@ set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
 
 functions -q fish_postexec
 
+# fnm (Node バージョン管理: .node-version を cd 時に自動適用)
+if type -q fnm
+    fnm env --use-on-cd --shell fish | source
+end
+
 # Google Cloud SDK (PFN インターンの Cluster Service 用)
 if test -f "$HOME/google-cloud-sdk/path.fish.inc"
     source "$HOME/google-cloud-sdk/path.fish.inc"
 end
-git gtr init fish | source
 
+# git-gtr (git worktree runner): `gtr cd` などのシェル統合
+if type -q git-gtr
+    set -l _gtr_init (test -n "$XDG_CACHE_HOME" && echo $XDG_CACHE_HOME || echo $HOME/.cache)/gtr/init-gtr.fish
+    test -f "$_gtr_init"; and head -n 1 "$_gtr_init" | string match -q '* init=6 *'; or git gtr init fish >/dev/null 2>&1
+    source "$_gtr_init" 2>/dev/null
+end
 
-# Added by Antigravity CLI installer
-set -gx PATH "/home/yoshimi/.local/bin" $PATH
+# Antigravity CLI / herdr (~/.local/bin を最優先に配置)
+fish_add_path -g -p "$HOME/.local/bin"

@@ -4,7 +4,7 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "AquaSKK: pass Ctrl+N/Ctrl+P to SKK in Firefox (next/prev candidate)",
+                        "description": "AquaSKK: pass Ctrl+N/Ctrl+P to SKK in Chrome/Firefox/Slack (next/prev candidate)",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -33,7 +33,9 @@
                                     {
                                         "type": "frontmost_application_if",
                                         "bundle_identifiers": [
-                                            "^org\\.mozilla\\.firefox$"
+                                            "^com\\.google\\.Chrome$",
+                                            "^org\\.mozilla\\.firefox$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     },
                                     {
@@ -73,7 +75,9 @@
                                     {
                                         "type": "frontmost_application_if",
                                         "bundle_identifiers": [
-                                            "^org\\.mozilla\\.firefox$"
+                                            "^com\\.google\\.Chrome$",
+                                            "^org\\.mozilla\\.firefox$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ]
                                     },
                                     {
@@ -188,8 +192,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -229,8 +232,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -270,8 +272,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -311,8 +312,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -352,8 +352,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -393,8 +392,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -434,8 +432,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -475,8 +472,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -516,8 +512,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -557,8 +552,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -598,8 +592,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -639,8 +632,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -680,8 +672,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -721,8 +712,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]
@@ -762,8 +752,7 @@
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^dev\\.warp\\.Warp-Stable$",
                                             "^com\\.mitchellh\\.ghostty$",
-                                            "^co\\.zeit\\.hyper$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^co\\.zeit\\.hyper$"
                                         ]
                                     }
                                 ]

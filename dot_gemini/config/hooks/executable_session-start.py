@@ -12,7 +12,7 @@ from pathlib import Path
 
 def notify_herdr(payload: dict) -> None:
     """herdr ペイン内で起動している場合，Claude 互換ペイロードに変換して通知する．"""
-    script = Path("/home/yoshimi/.claude/hooks/herdr-agent-state.sh")
+    script = Path.home() / ".claude/hooks/herdr-agent-state.sh"
     if not script.exists() or os.environ.get("HERDR_ENV") != "1":
         return
     compat = {
@@ -46,7 +46,8 @@ def collect_unmigrated_claude_md(payload: dict) -> list[str]:
             if p not in roots:
                 roots.append(p)
 
-    global_claude = Path("/home/yoshimi/.claude/CLAUDE.md").resolve()
+    home_dir = Path.home().resolve()
+    global_claude = (home_dir / ".claude/CLAUDE.md").resolve()
     seen: set[Path] = set()
     injected: list[str] = []
 
@@ -67,7 +68,7 @@ def collect_unmigrated_claude_md(payload: dict) -> list[str]:
                             )
                     except Exception:
                         pass
-            if (cur / ".git").exists() or cur == Path("/home/yoshimi") or cur.parent == cur:
+            if (cur / ".git").exists() or cur == home_dir or cur.parent == cur:
                 break
             cur = cur.parent
     return injected

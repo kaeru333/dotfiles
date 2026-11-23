@@ -1,9 +1,18 @@
 {
+  "herdr": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "[ -f \"$HOME/.gemini/config/hooks/herdr-agent-state.sh\" ] && bash \"$HOME/.gemini/config/hooks/herdr-agent-state.sh\" session || printf '{}\\n'",
+        "timeout": 10
+      }
+    ]
+  },
   "claude-session-and-fallback": {
     "SessionStart": [
       {
         "type": "command",
-        "command": "python3 /home/yoshimi/.gemini/config/hooks/session-start.py",
+        "command": "python3 \"$HOME/.gemini/config/hooks/session-start.py\"",
         "timeout": 10
       }
     ]
@@ -15,7 +24,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 /home/yoshimi/.gemini/config/hooks/pre-tool-guard.py",
+            "command": "python3 \"$HOME/.gemini/config/hooks/pre-tool-guard.py\"",
             "timeout": 10
           }
         ]
@@ -26,7 +35,7 @@
     "Stop": [
       {
         "type": "command",
-        "command": "python3 /home/yoshimi/.gemini/config/hooks/stop-english-log.py",
+        "command": "python3 \"$HOME/.gemini/config/hooks/stop-english-log.py\"",
         "timeout": 10
       }
     ]

@@ -17,8 +17,10 @@ return {
     keys = {
         { "<leader>gd", "<cmd>DiffviewOpen<cr>",          desc = "Diffview: 作業ツリーの差分を開く" },
         { "<leader>gq", "<cmd>DiffviewClose<cr>",         desc = "Diffview: 閉じる" },
+        { "<leader>gD", "<cmd>DiffviewClose<cr>",         desc = "Diffview: 閉じる" },
         { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview: 現在のファイルの履歴" },
         { "<leader>gH", "<cmd>DiffviewFileHistory<cr>",   desc = "Diffview: リポジトリ全体の履歴" },
+        { "<leader>gh", ":DiffviewFileHistory<cr>",       mode = "x", desc = "Diffview: 選択範囲の履歴" },
         { "<leader>gf", "<cmd>DiffviewToggleFiles<cr>",   desc = "Diffview: ファイルパネルのトグル" },
     },
     opts = {

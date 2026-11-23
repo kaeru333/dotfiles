@@ -72,7 +72,8 @@ cask "nikitabobko/tap/aerospace"       # タイル型 WM
 # --- macOS: GUI アプリ --------------------------------------------------------
 cask "alacritty"            # ターミナル
 cask "ghostty"              # ターミナル
-cask "firefox"             # ブラウザ
+cask "google-chrome"        # メインブラウザ
+cask "firefox"              # サブブラウザ
 cask "visual-studio-code"   # エディタ
 cask "raycast"              # ランチャー（rofi 相当）
 cask "karabiner-elements"   # キーリマップ
@@ -84,6 +85,7 @@ cask "session-manager-plugin" # AWS SSM セッション
 
 # --- フォント -----------------------------------------------------------------
 cask "font-0xproto-nerd-font"
+cask "font-code-new-roman-nerd-font"
 
 # --- VS Code 拡張 -------------------------------------------------------------
 vscode "ms-python.python"
