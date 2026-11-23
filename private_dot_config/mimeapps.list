@@ -1,4 +1,3 @@
-
 [Default Applications]
 x-scheme-handler/slack=slack.desktop
 image/png=feh.desktop
@@ -6,9 +5,9 @@ image/jpeg=feh.desktop
 image/gif=mpv.desktop
 image/bmp=feh.desktop
 image/webp=feh.desktop
-text/html=firefox.desktop
-x-scheme-handler/http=firefox.desktop
-x-scheme-handler/https=firefox.desktop
+text/html=google-chrome.desktop
+x-scheme-handler/http=google-chrome.desktop
+x-scheme-handler/https=google-chrome.desktop
 x-scheme-handler/about=firefox.desktop
 x-scheme-handler/unknown=firefox.desktop
 application/pdf=org.pwmt.zathura.desktop
@@ -16,4 +15,13 @@ application/vnd.openxmlformats-officedocument.presentationml.presentation=wps-of
 application/vnd.ms-powerpoint=wps-office-wpp.desktop
 x-scheme-handler/obsidian=obsidian.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
-text/markdown=leaf-markdown.desktop
+text/markdown=google-chrome.desktop
+text/x-markdown=google-chrome.desktop
+x-scheme-handler/typeless=typeless.desktop
+x-scheme-handler/unityhub=unityhub.desktop
+application/xhtml+xml=google-chrome.desktop
+x-scheme-handler/webcal=google-chrome.desktop
+
+[Added Associations]
+x-scheme-handler/unityhub=unityhub.desktop;
+x-scheme-handler/typeless=typeless.desktop;
