@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Antigravity CLI (agy) の settings.json を chezmoi 経由でマージ管理する modify_ スクリプト．
+# - 共通設定 (allowNonWorkspaceAccess / colorScheme / permissions / statusLine) はリポジトリから同期する．
+# - ローカル固有の trustedWorkspaces やその他の動的キーは既存のローカル設定をそのまま保持する．
+# - model はローカルに既にあれば維持し，未設定の環境ではデフォルト値を補完する．
+# - permissions.deny のホームパスは chezmoi テンプレート ({{ .chezmoi.homeDir }}) で環境ごとに展開する．
+set -euo pipefail
+
+if ! command -v jq >/dev/null 2>&1; then
+  echo "modify_private_settings.json: jq が見つかりません" >&2
+  exit 1
+fi
+
+current=$(cat)
+if [ -z "$current" ] || ! printf '%s' "$current" | jq -e 'type == "object"' >/dev/null 2>&1; then
+  current='{}'
+fi
+
+home_dir='{{ .chezmoi.homeDir }}'
+
+printf '%s' "$current" | jq --indent 2 --arg home "$home_dir" '
+  . as $cur |
+  {
+    allowNonWorkspaceAccess: true,
+    colorScheme: "tokyo night",
+    model: ($cur.model // "Gemini 4 Neon (Medium)"),
+    permissions: {
+      allow: [
+        "command(herdr pane read)",
+        "command(herdr pane wait-output)",
+        "command(uvx ruff check)",
+        "command(ruff check)",
+        "command(pdfinfo)",
+        "command(journalctl)",
+        "command(hyprctl monitors)",
+        "command(hyprctl workspaces)",
+        "command(hyprctl workspacerules)",
+        "command(hyprctl clients)",
+        "command(hyprctl getoption)",
+        "command(hyprctl version)",
+        "command(notify-slack)"
+      ],
+      deny: [
+        ("read_file(" + $home + "/.config/fish/secrets.fish)"),
+        ("read_file(" + $home + "/.config/fish/conf.d/secrets.fish)"),
+        ("read_file(" + $home + "/.config/nvim/.env)"),
+        ("read_file(" + $home + "/.local/share/chezmoi/private_dot_config/fish/conf.d/private_secrets.fish.tmpl)"),
+        "command(cat *.env*)",
+        "command(grep *.env*)",
+        "command(cat *secrets.fish*)",
+        "command(grep *secrets.fish*)"
+      ]
+    },
+    statusLine: {
+      type: "command",
+      command: "~/.gemini/antigravity-cli/statusline.sh",
+      enabled: true
+    }
+  } as $shared |
+  ($cur + $shared)
+'
