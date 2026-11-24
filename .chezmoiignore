@@ -147,7 +147,8 @@ Library/Preferences/com.raycast.macos.plist
 .config/zsh/plugins/**
 
 # --- Gemini / Antigravity CLI & Claude Code: ランタイム・キャッシュ・機密除外 ---
-.gemini/antigravity-cli/**
+.gemini/antigravity-cli/*
+!.gemini/antigravity-cli/statusline.sh
 .gemini/google_accounts.json
 .gemini/installation_id
 .gemini/oauth_creds.json
