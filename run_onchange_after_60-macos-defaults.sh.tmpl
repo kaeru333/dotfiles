@@ -50,6 +50,17 @@ defaults write com.apple.screencapture disable-shadow -bool true
 # --- Dock: 最近使ったアプリを隠す ---
 defaults write com.apple.dock show-recents -bool false
 
+# --- デフォルトブラウザ / ファイル関連付け (duti) ---
+# ※ http/https は macOS 側で確認ダイアログ必須のため失敗時はスキップ
+if command -v duti >/dev/null 2>&1; then
+  duti -s com.google.Chrome http 2>/dev/null || true
+  duti -s com.google.Chrome https 2>/dev/null || true
+  duti -s com.google.Chrome public.html all || true
+  duti -s com.google.Chrome public.xhtml all || true
+  duti -s com.google.Chrome net.daringfireball.markdown all || true
+  duti -s com.google.Chrome .md all || true
+fi
+
 echo "==> Dock / Finder / SystemUIServer を再起動して反映します"
 killall Dock Finder SystemUIServer 2>/dev/null || true
 echo "==> 完了（キーリピート等は再ログイン後に反映）"

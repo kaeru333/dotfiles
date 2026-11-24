@@ -1,0 +1,3 @@
+{{- $p := joinPath .chezmoi.homeDir ".claude/tsubame.md" -}}
+{{- if stat $p -}}{{ $p }}
+{{- end -}}

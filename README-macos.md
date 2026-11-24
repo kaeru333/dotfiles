@@ -201,7 +201,7 @@ chezmoi update            # = git pull + apply
 | `brew` が見つからない | `eval "$(/opt/homebrew/bin/brew shellenv)"` を実行。fish なら再ログインで `conf.d` が通す。 |
 | `brew bundle` が一部失敗 | ネットワーク / cask の一時的失敗が多い。`brew bundle --file=~/.config/homebrew/Brewfile` を再実行。 |
 | run_once が走らない / もう一度走らせたい | `chezmoi state delete-bucket --bucket=scriptState` の後 `chezmoi apply`。 |
-| 日本語入力の候補が Ctrl+N/P で動かない | karabiner の入力監視権限を確認（→ 3章）。Firefox 向けの素通しルールは karabiner.json に定義済み。 |
+| 日本語入力の候補が Ctrl+N/P で動かない | karabiner の入力監視権限を確認（→ 3章）。Chrome / Firefox / Slack 向けの素通しルールは karabiner.json に定義済み。 |
 | SKK-JISYO.L が無い | `chezmoi apply` を再実行するか、AquaSKK 環境設定から手動で辞書を追加。 |
 | chezmoi の設定を作り直したい | `chezmoi init`（`~/.config/chezmoi/chezmoi.toml` を再生成）。 |
 

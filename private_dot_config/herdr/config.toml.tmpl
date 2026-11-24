@@ -32,8 +32,7 @@ reload_config = "prefix+shift+r"
 # --- agent 切り替え (herdr ネイティブ．ポップアップも枠も出ない) ---
 # サイドバーの agents パネルの並び順で 1 つずつ移動し，端まで行くと巡回する．
 # prefix を挟まない直接キーなので，ctrl+shift を押したまま矢印を連打できる．
-# alt は hyprland 用に空けておく方針のため使わない．
-# hyprland (ctrl+shift 系 bind なし) と foot (既定のまま) の両方と衝突しないことを確認済み．
+# alt は hyprland / AeroSpace 用に空けておく方針のため使わない．
 previous_agent = "ctrl+shift+up"
 next_agent     = "ctrl+shift+down"
 
@@ -50,6 +49,12 @@ key = "prefix+a"
 type = "shell"
 command = "herdr plugin pane open --plugin agent-picker --entrypoint picker --focus"
 
+# --- herdr-reviewr プラグイン (persiyanov.reviewr) の差分レビューペインを開閉 ---
+[[keys.command]]
+key = "prefix+shift+v"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+
 # --- 配色モード (ライト/ダーク) の一括トグル ---
 # ghostty ・fish ・neovim ・herdr ・waybar をまとめて切り替える．
 [[keys.command]]
@@ -60,8 +65,6 @@ command = '[ -x "$HOME/.local/bin/theme-toggle" ] && "$HOME/.local/bin/theme-tog
 # --- (任意) tmux の prefix+H/J/K/L 相当の「1 発リサイズ」 ---
 # 上の resize_mode (モーダル) が herdr ネイティブの方法．
 # tmux のように直接伸縮したい場合は以下のコメントを外す．
-# シェルコマンドから herdr CLI を呼ぶ (--current は HERDR_PANE_ID で解決) ．
-# 効かない場合は resize_mode を使うこと．amount は 0.0-1.0 の割合．
 # [[keys.command]]
 # key = "prefix+shift+h"
 # type = "shell"
@@ -79,6 +82,14 @@ command = '[ -x "$HOME/.local/bin/theme-toggle" ] && "$HOME/.local/bin/theme-tog
 # type = "shell"
 # command = "herdr pane resize --current --direction right --amount 0.08"
 
+[terminal]
+# ログインシェル ($SHELL) が zsh のままでもペインは fish で開く
+{{- if eq .chezmoi.os "darwin" }}
+default_shell = "/opt/homebrew/bin/fish"
+{{- else }}
+default_shell = "/usr/bin/fish"
+{{- end }}
+
 [ui.sound]
 enabled = false
 
@@ -89,9 +100,17 @@ delivery = "herdr"
 show_agent_labels_on_pane_borders = true
 
 agent_panel_sort = "spaces"
+
+{{- $modeFile := joinPath .chezmoi.homeDir ".local/state/theme-mode" }}
+{{- $herdrTheme := "tokyo-night" }}
+{{- if stat $modeFile }}
+{{-   if eq (trim (include $modeFile)) "light" }}
+{{-     $herdrTheme = "tokyo-night-day" }}
+{{-   end }}
+{{- end }}
 [theme]
 # name は theme-toggle が tokyo-night (dark) / tokyo-night-day (light) に書き換える．
-name = "tokyo-night"
+name = "{{ $herdrTheme }}"
 auto_switch = false
 
 [experimental]

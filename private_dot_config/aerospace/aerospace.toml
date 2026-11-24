@@ -44,8 +44,9 @@ outer.bottom     = 46
 
 # --- launchers (Hyprland: $mainMod RETURN / SHIFT RETURN) ---
 alt-enter       = 'exec-and-forget open -a Ghostty'
-alt-shift-enter = 'exec-and-forget open -a Firefox'
+alt-shift-enter = 'exec-and-forget open -a "Google Chrome"'
 alt-d           = 'exec-and-forget open -a Raycast'   # Hyprland: alt D menu (rofi) — restored from skhd
+alt-shift-n     = 'exec-and-forget /bin/bash -lc "$HOME/.local/bin/theme-toggle toggle"'
 
 # --- window management ---
 alt-shift-q = 'close'                            # Hyprland: SHIFT Q killactive
@@ -173,14 +174,25 @@ shift-l = ['move-node-to-monitor right',  'mode main']
 esc     = 'mode main'
 
 # --- pin workspaces to monitors ---
-# 'term'  → USB-C EIZO (EV3285).    "terminal" monitor.
+# 'term'  → BenQ (PD2705Q).         "terminal" monitor.
+# 'web'   → USB-C EIZO (EV3285).    "browser" monitor.
+# 'chat'  → USB-C EIZO (EV3285).    Slack.
 # 'xcode' → HDMI  DELL (U2718Q).    "Xcode" monitor.
-# Fallback order if the target monitor is disconnected: any secondary monitor, then built-in.
+# Home (USB-C LG SMART WQHD + built-in): 'term' → LG, 'web'/'chat' → built-in.
+# HDMI DELL S2721HN + built-in: 'term' → DELL, 'web'/'chat' → built-in.
+# Fallback order if the target monitor is disconnected: EV3285/secondary (external), then main/built-in.
 [workspace-to-monitor-force-assignment]
-term  = ['EV3285',      'secondary', 'built-in']
+term  = ['PD2705Q',     'LG SMART WQHD', 'DELL S2721HN', 'EV3285', 'secondary', 'main', 'built-in']
+web   = ['PL2390', 'EV3285',      'built-in',      'secondary']
+chat  = ['PL2390', 'EV3285',      'built-in',      'secondary']
 xcode = ['DELL U2718Q', 'secondary', 'built-in']
 
 # --- auto-place Xcode windows on the 'xcode' workspace (HDMI / DELL) ---
 [[on-window-detected]]
 if.app-id = 'com.apple.dt.Xcode'
 run = ['move-node-to-workspace xcode']
+
+# --- auto-place Slack windows on the 'chat' workspace ---
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = ['move-node-to-workspace chat']

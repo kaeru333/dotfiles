@@ -1,1 +1,1 @@
-/home/yoshimi/.gemini/AGENTS.md
+../AGENTS.md

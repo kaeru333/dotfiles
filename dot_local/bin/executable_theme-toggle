@@ -114,8 +114,13 @@ if [ -f "$HERDR_CONF" ]; then
 		herdr_theme="$HERDR_THEME_DARK"
 	fi
 	if [ -n "$herdr_theme" ]; then
-		# [theme] セクションの name 行だけを書き換える
-		sed -i -E "/^\[theme\]/,/^\[/ s|^name = \".*\"|name = \"$herdr_theme\"|" "$HERDR_CONF"
+		# [theme] セクションの name 行だけを書き換える (GNU/BSD sed 両対応)
+		tmp=$(mktemp)
+		if sed -E "/^\[theme\]/,/^\[/ s|^name = \".*\"|name = \"$herdr_theme\"|" "$HERDR_CONF" >"$tmp" 2>/dev/null; then
+			mv "$tmp" "$HERDR_CONF"
+		else
+			rm -f "$tmp"
+		fi
 		command -v herdr >/dev/null && herdr server reload-config >/dev/null 2>&1
 	fi
 fi
@@ -157,10 +162,20 @@ fi
 
 # --- neovim -----------------------------------------------------------------
 # 起動中のインスタンスへ反映する (起動時は core.theme が状態ファイルを読む) ．
+# Linux: $XDG_RUNTIME_DIR/nvim.*.0 / macOS: $TMPDIR/nvim.$USER/*/nvim.*.0
 shopt -s nullglob
-for sock in "$RUNTIME_DIR"/nvim.*.0; do
-	timeout 2 nvim --server "$sock" --remote-expr \
-		"luaeval(\"pcall(require('core.theme').apply, '$mode')\")" >/dev/null 2>&1
+nvim_socks=("$RUNTIME_DIR"/nvim.*.0)
+if [ -n "${TMPDIR:-}" ]; then
+	nvim_socks+=("${TMPDIR%/}/nvim.${USER:-$(id -un)}"/*/nvim.*.0)
+fi
+for sock in "${nvim_socks[@]}"; do
+	if command -v timeout >/dev/null 2>&1; then
+		timeout 2 nvim --server "$sock" --remote-expr \
+			"luaeval(\"pcall(require('core.theme').apply, '$mode')\")" >/dev/null 2>&1
+	else
+		nvim --server "$sock" --remote-expr \
+			"luaeval(\"pcall(require('core.theme').apply, '$mode')\")" >/dev/null 2>&1 &
+	fi
 done
 shopt -u nullglob
 

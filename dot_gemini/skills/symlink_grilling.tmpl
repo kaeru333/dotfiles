@@ -1,0 +1,3 @@
+{{- $p := joinPath .chezmoi.homeDir ".claude/skills/grilling" -}}
+{{- if stat $p -}}{{ $p }}
+{{- end -}}
